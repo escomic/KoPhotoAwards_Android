@@ -13,7 +13,7 @@ interface PhotoAwardApi {
         @Query("numOfRows") numOfRows: Int? = 10,
         @Query("pageNo") pageNo: Int? = 1,
         @Query("MobileOS") mobileOS: String = "AND",
-        @Query("MobileApp") mobileApp: String = "KoPhoto",
+        @Query("MobileApp") mobileApp: String = "KoPhotos",
         @Query("_type") type: String = "json",
         @Query("arrange") arrange: String? = "C",
         @Query("mdfcnDt") mdfcnDt: String? = null,
@@ -26,7 +26,7 @@ interface PhotoAwardApi {
         @Query("numOfRows") numOfRows: Int? = 10,
         @Query("pageNo") pageNo: Int? = 1,
         @Query("MobileOS") mobileOS: String = "AND",
-        @Query("MobileApp") mobileApp: String = "KoPhoto",
+        @Query("MobileApp") mobileApp: String = "KoPhotos",
         @Query("_type") type: String = "json",
         @Query("arrange") arrange: String? = "C"
     ): KoPhotoResponse<KoPhotoListBody<PhotoGalleryItem>>

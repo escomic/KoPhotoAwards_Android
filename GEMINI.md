@@ -1,10 +1,10 @@
-# KoPhotoAwards Android Project Guidelines
+# KoPhotos Android Project Guidelines
 
-이 프로젝트는 한국 사진 공모전 당선작 리스트와 상세 정보를 제공하는 Android 애플리케이션입니다.
+이 프로젝트는 한국 사진 공모전 당선작 및 일반 관광 사진 갤러리 정보를 제공하는 Android 애플리케이션입니다.
 
 ## 🎯 Project Overview
-- **목적**: 사진 공모전 당선작 전시 및 정보 제공
-- **주요 기능**: 사진 리스트 조회, 사진 상세 정보 확인, (향후) 촬영 장소 지도 표시 등
+- **목적**: 사진 공모전 당선작 및 관광 사진 전시 및 정보 제공
+- **주요 기능**: 사진 리스트(수상작/갤러리) 조회, 사진 상세 정보 확인, (향후) 촬영 장소 지도 표시 등
 
 ## 🏗 Architecture
 프로젝트는 **안드로이드 권장 앱 아키텍처**를 기반으로 하며, **MVI (Model-View-Intent)** 패턴과 **Multi-module** 구조를 채택합니다.
