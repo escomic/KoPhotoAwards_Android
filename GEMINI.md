@@ -45,6 +45,9 @@
     - **Feature와 Feature 모듈 간 참조는 하지 않습니다.** (화면 이동 시 `:core:navigation` 모듈의 인터페이스를 활용합니다.)
 4. **Testing**: 핵심 비즈니스 로직과 ViewModel의 State 전이는 단위 테스트를 작성하여 검증합니다.
 5. **Preview**: 모든 Compose UI 컴포넌트는 `Preview`를 포함하여 UI를 독립적으로 확인할 수 있도록 합니다.
+6. **Dependency Management**:
+    - `libs.versions.toml`에 새로운 항목 추가 시 알파벳 순서를 유지합니다.
+    - `build.gradle.kts`에 의존성 추가 시 알파벳 순서로 정렬하여 가독성을 높입니다.
 
 ## 🗺 Roadmap
 - [ ] Open API 연동 및 기본 리스트 구현
