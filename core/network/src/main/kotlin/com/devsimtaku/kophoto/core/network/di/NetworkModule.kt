@@ -4,7 +4,6 @@ import com.devsimtaku.kophoto.core.network.BuildConfig
 import com.devsimtaku.kophoto.core.network.PhotoDataSource
 import com.devsimtaku.kophoto.core.network.retrofit.PhotoAwardApi
 import com.devsimtaku.kophoto.core.network.retrofit.RetrofitPhotoDataSource
-import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,6 +14,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -57,11 +57,15 @@ object NetworkModule {
 
         return OkHttpClient.Builder()
             .addInterceptor(serviceKeyInterceptor)
-            .addInterceptor(
-                HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BODY
+            .apply {
+                if (BuildConfig.DEBUG) {
+                    addInterceptor(
+                        HttpLoggingInterceptor().apply {
+                            level = HttpLoggingInterceptor.Level.BODY
+                        }
+                    )
                 }
-            )
+            }
             .build()
     }
 

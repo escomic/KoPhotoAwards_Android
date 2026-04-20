@@ -54,7 +54,7 @@ class PhotoAwardPagingSourceTest {
         )
 
         val pager = TestPager(PagingConfig(pageSize = 10), pagingSource)
-        val result = pager.refresh() as PagingSource.LoadResult.Page<Int, Pho혀toAward>
+        val result = pager.refresh() as PagingSource.LoadResult.Page<Int, PhotoAward>
 
         assertEquals(items.map { it.asDomain() }, result.data)
         assertEquals(null, result.prevKey)
