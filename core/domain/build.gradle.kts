@@ -4,11 +4,7 @@ plugins {
 
 android {
     namespace = "com.devsimtaku.kophoto.core.domain"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24
@@ -33,9 +29,9 @@ android {
 }
 
 dependencies {
+    api(libs.androidx.paging.common)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }
