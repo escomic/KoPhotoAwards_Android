@@ -16,6 +16,7 @@ import com.devsimtaku.kophoto.core.navigation.rememberNavigationState
 import com.devsimtaku.kophoto.core.navigation.toBackStack
 import com.devsimtaku.kophoto.feature.photos.navigation.PhotosNavKey
 import com.devsimtaku.kophoto.feature.photos.navigation.photosEntry
+import com.devsimtaku.kophoto.feature.rewards.navigation.rewardsEntry
 import com.devsimtaku.kophoto.navigation.navigateToPhotoDetail
 import com.devsimtaku.kophoto.photodetail.navigation.photoDetailEntry
 
@@ -34,6 +35,9 @@ fun KoPhotoApp() {
     val navigator = remember { Navigator(navigationState) }
     val entryProvider = entryProvider {
         photosEntry(
+            onPhotoClick = navigator::navigateToPhotoDetail
+        )
+        rewardsEntry(
             onPhotoClick = navigator::navigateToPhotoDetail
         )
         photoDetailEntry(

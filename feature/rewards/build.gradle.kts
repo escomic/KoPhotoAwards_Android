@@ -1,26 +1,20 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "com.devsimtaku.kophoto"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    namespace = "com.devsimtaku.kophoto.feature.rewards"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.devsimtaku.kophoto"
         minSdk = 24
-        targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -36,24 +30,14 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {
-    implementation(projects.feature.rewards)
-    implementation(projects.feature.photos)
-    implementation(projects.feature.photodetail)
-
-    implementation(projects.core.data)
+    api(projects.core.navigation)
     implementation(projects.core.designsystem)
     implementation(projects.core.domain)
-    implementation(projects.core.navigation)
-    implementation(projects.core.designsystem)
+    implementation(projects.core.ui)
 
-
-    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
@@ -61,10 +45,10 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.material3.adaptive.navigation.suite)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
-    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.savedstate.compose)
     implementation(libs.hilt.android)
 
     ksp(libs.hilt.compiler)
