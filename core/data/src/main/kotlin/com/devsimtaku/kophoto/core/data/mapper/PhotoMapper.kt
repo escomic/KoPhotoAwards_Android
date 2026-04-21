@@ -12,6 +12,7 @@ fun PhotoAwardItem.asDomain(): PhotoAward {
         photographer = koCmanNm,
         thumbnail = thumbImage,
         original = orgImage,
+        location = koFilmst,
         description = koWnprzDiz,
         keyword = koKeyWord,
         date = filmDay
@@ -25,7 +26,7 @@ fun PhotoGalleryItem.asDomain(): PhotoGallery {
         imageUrl = galWebImageUrl,
         photographer = galPhotographer,
         location = galPhotographyLocation,
-        createdTime = galCreatedtime,
+        date = galPhotographyMonth,
         searchKeyword = galSearchKeyword
     )
 }

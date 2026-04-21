@@ -6,7 +6,8 @@ data class PhotoAward(
     val photographer: String?,
     val thumbnail: String?,
     val original: String?,
+    val location: String?,
     val description: String?,
     val keyword: String?,
-    val date: String?,
+    val date: String?,  // YYYYMM (201404)
 )

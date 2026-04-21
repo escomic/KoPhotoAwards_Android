@@ -34,6 +34,7 @@ android {
 
 dependencies {
     api(projects.core.navigation)
+    implementation(projects.core.domain)
     implementation(projects.feature.photos)
     implementation(projects.feature.rewards)
     implementation(projects.core.designsystem)

@@ -23,6 +23,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.devsimtaku.kophoto.core.designsystem.component.KPLoadingIndicator
 import com.devsimtaku.kophoto.core.designsystem.component.KPPhotoItem
+import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import com.devsimtaku.kophoto.core.domain.model.PhotoGallery
 import com.devsimtaku.kophoto.feature.photos.contract.PhotosUiEffect
 import com.devsimtaku.kophoto.feature.photos.contract.PhotosUiEvent
@@ -32,7 +33,7 @@ import com.devsimtaku.kophoto.feature.photos.contract.PhotosUiEvent
 fun PhotosScreen(
     modifier: Modifier = Modifier,
     viewModel: PhotosViewModel = hiltViewModel(),
-    onPhotoClick: (String) -> Unit
+    onPhotoClick: (PhotoDetail) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val photos = viewModel.photos.collectAsLazyPagingItems()
@@ -40,7 +41,9 @@ fun PhotosScreen(
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
-                is PhotosUiEffect.NavigateToDetail -> onPhotoClick(effect.id)
+                is PhotosUiEffect.NavigateToDetail -> {
+                    onPhotoClick(effect.photo.toArgs())
+                }
             }
         }
     }
@@ -54,8 +57,8 @@ fun PhotosScreen(
     ) {
         PhotosContent(
             photos = photos,
-            onPhotoClick = { id ->
-                viewModel.sendEvent(PhotosUiEvent.OnPhotoClick(id))
+            onPhotoClick = { photo ->
+                viewModel.sendEvent(PhotosUiEvent.OnPhotoClick(photo))
             }
         )
     }
@@ -65,7 +68,7 @@ fun PhotosScreen(
 private fun PhotosContent(
     modifier: Modifier = Modifier,
     photos: LazyPagingItems<PhotoGallery>,
-    onPhotoClick: (String) -> Unit
+    onPhotoClick: (PhotoGallery) -> Unit
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize()
@@ -79,7 +82,7 @@ private fun PhotosContent(
                     imageUrl = photo.imageUrl,
                     title = photo.title,
                     photographer = photo.photographer,
-                    onClick = { onPhotoClick(photo.id) }
+                    onClick = { onPhotoClick(photo) }
                 )
             }
         }
@@ -101,6 +104,17 @@ private fun PhotosContent(
         }
     }
 }
+
+private fun PhotoGallery.toArgs(): PhotoDetail = PhotoDetail(
+    contentId = id,
+    imageUrl = imageUrl,
+    title = title,
+    location = location ?: "",
+    filmDay = date ?: "",
+    photographer = photographer ?: "",
+    keyword = searchKeyword ?: "",
+    description = ""
+)
 
 @Composable
 private fun ErrorItem(message: String) {

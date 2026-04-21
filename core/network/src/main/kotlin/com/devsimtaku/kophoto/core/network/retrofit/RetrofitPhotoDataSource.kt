@@ -7,7 +7,7 @@ import com.devsimtaku.kophoto.core.network.model.PhotoAwardItem
 import com.devsimtaku.kophoto.core.network.model.PhotoGalleryItem
 
 class RetrofitPhotoDataSource(
-    private val photoAwardApi: PhotoAwardApi
+    private val koPhotoApi: KoPhotoApi
 ) : PhotoDataSource {
     override suspend fun getPhotoAwardList(
         numOfRows: Int?,
@@ -17,7 +17,7 @@ class RetrofitPhotoDataSource(
         lDongRegnCd: String?,
         keyword: String?
     ): KoPhotoResponse<KoPhotoListBody<PhotoAwardItem>> {
-        return photoAwardApi.getPhotoAwardList(
+        return koPhotoApi.getPhotoAwardList(
             numOfRows = numOfRows,
             pageNo = pageNo,
             arrange = arrange,
@@ -32,7 +32,7 @@ class RetrofitPhotoDataSource(
         pageNo: Int?,
         arrange: String?
     ): KoPhotoResponse<KoPhotoListBody<PhotoGalleryItem>> {
-        return photoAwardApi.getGalleryList(
+        return koPhotoApi.getGalleryList(
             numOfRows = numOfRows,
             pageNo = pageNo,
             arrange = arrange

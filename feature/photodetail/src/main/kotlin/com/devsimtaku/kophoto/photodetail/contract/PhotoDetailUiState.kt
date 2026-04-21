@@ -1,5 +1,7 @@
 package com.devsimtaku.kophoto.photodetail.contract
 
+import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
+
 data class PhotoDetailUiState(
-    val id: String
+    val item: PhotoDetail? = null
 )

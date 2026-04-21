@@ -2,7 +2,7 @@ package com.devsimtaku.kophoto.core.network.di
 
 import com.devsimtaku.kophoto.core.network.BuildConfig
 import com.devsimtaku.kophoto.core.network.PhotoDataSource
-import com.devsimtaku.kophoto.core.network.retrofit.PhotoAwardApi
+import com.devsimtaku.kophoto.core.network.retrofit.KoPhotoApi
 import com.devsimtaku.kophoto.core.network.retrofit.RetrofitPhotoDataSource
 import dagger.Module
 import dagger.Provides
@@ -84,14 +84,14 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun providePhotoAwardApi(retrofit: Retrofit): PhotoAwardApi {
-        return retrofit.create(PhotoAwardApi::class.java)
+    fun providePhotoAwardApi(retrofit: Retrofit): KoPhotoApi {
+        return retrofit.create(KoPhotoApi::class.java)
     }
 
     @Provides
     @Singleton
     fun providePhotoDataSource(
-        photoAwardApi: PhotoAwardApi
+        photoAwardApi: KoPhotoApi
     ): PhotoDataSource {
         return RetrofitPhotoDataSource(photoAwardApi)
     }

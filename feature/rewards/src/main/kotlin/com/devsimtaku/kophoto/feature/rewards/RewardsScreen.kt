@@ -17,6 +17,7 @@ import androidx.paging.compose.itemKey
 import com.devsimtaku.kophoto.core.designsystem.component.KPLoadingIndicator
 import com.devsimtaku.kophoto.core.designsystem.component.KPPhotoItem
 import com.devsimtaku.kophoto.core.domain.model.PhotoAward
+import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import com.devsimtaku.kophoto.feature.rewards.contract.RewardsUiEffect
 import com.devsimtaku.kophoto.feature.rewards.contract.RewardsUiEvent
 
@@ -25,7 +26,7 @@ import com.devsimtaku.kophoto.feature.rewards.contract.RewardsUiEvent
 fun RewardsScreen(
     modifier: Modifier = Modifier,
     viewModel: RewardsViewModel = hiltViewModel(),
-    onPhotoClick: (String) -> Unit
+    onPhotoClick: (PhotoDetail) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val rewards = viewModel.rewards.collectAsLazyPagingItems()
@@ -33,7 +34,9 @@ fun RewardsScreen(
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
-                is RewardsUiEffect.NavigateToDetail -> onPhotoClick(effect.id)
+                is RewardsUiEffect.NavigateToDetail -> {
+                    onPhotoClick(effect.reward.toArgs())
+                }
             }
         }
     }
@@ -47,8 +50,8 @@ fun RewardsScreen(
     ) {
         RewardsContent(
             rewards = rewards,
-            onPhotoClick = { id ->
-                viewModel.sendEvent(RewardsUiEvent.OnPhotoClick(id))
+            onPhotoClick = { reward ->
+                viewModel.sendEvent(RewardsUiEvent.OnPhotoClick(reward))
             }
         )
     }
@@ -58,7 +61,7 @@ fun RewardsScreen(
 private fun RewardsContent(
     modifier: Modifier = Modifier,
     rewards: LazyPagingItems<PhotoAward>,
-    onPhotoClick: (String) -> Unit
+    onPhotoClick: (PhotoAward) -> Unit
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize()
@@ -72,7 +75,7 @@ private fun RewardsContent(
                     imageUrl = reward.thumbnail ?: "",
                     title = reward.title,
                     photographer = reward.photographer,
-                    onClick = { onPhotoClick(reward.id) }
+                    onClick = { onPhotoClick(reward) }
                 )
             }
         }
@@ -87,3 +90,14 @@ private fun RewardsContent(
         }
     }
 }
+
+private fun PhotoAward.toArgs(): PhotoDetail = PhotoDetail(
+    contentId = id,
+    imageUrl = original ?: thumbnail ?: "",
+    title = title,
+    location = location ?: "",
+    filmDay = date ?: "",
+    photographer = photographer ?: "",
+    keyword = keyword ?: "",
+    description = description ?: ""
+)

@@ -1,9 +1,5 @@
 package com.devsimtaku.kophoto.core.network.retrofit
 
-import com.devsimtaku.kophoto.core.network.model.KoPhotoListBody
-import com.devsimtaku.kophoto.core.network.model.KoPhotoResponse
-import com.devsimtaku.kophoto.core.network.model.PhotoAwardItem
-import com.devsimtaku.kophoto.core.network.model.PhotoGalleryItem
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
@@ -19,7 +15,7 @@ import retrofit2.Retrofit
 class PhotoAwardApiTest {
 
     private lateinit var mockWebServer: MockWebServer
-    private lateinit var api: PhotoAwardApi
+    private lateinit var api: KoPhotoApi
 
     private val json = Json {
         ignoreUnknownKeys = true
@@ -32,7 +28,7 @@ class PhotoAwardApiTest {
             .baseUrl(mockWebServer.url("/"))
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
-            .create(PhotoAwardApi::class.java)
+            .create(KoPhotoApi::class.java)
     }
 
     @After

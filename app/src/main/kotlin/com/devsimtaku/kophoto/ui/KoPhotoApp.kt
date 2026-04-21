@@ -1,7 +1,8 @@
 package com.devsimtaku.kophoto.ui
 
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -54,7 +55,22 @@ fun KoPhotoApp() {
                 rememberViewModelStoreNavEntryDecorator<NavKey>(),
             ),
             onBack = navigator::goBack,
-            entryProvider = entryProvider
+            entryProvider = entryProvider,
+            transitionSpec = {
+                slideInHorizontally { it } togetherWith slideOutHorizontally { -it }
+            },
+            popTransitionSpec = { defaultPopTransform() },
+            predictivePopTransitionSpec = { _ -> defaultPopTransform() }
         )
+    }
+}
+
+
+/**
+ * 공통적으로 사용되는 팝(뒤로 가기) 애니메이션 변환 로직
+ */
+private fun defaultPopTransform(): ContentTransform {
+    return (slideInHorizontally { -it } togetherWith slideOutHorizontally { it }).apply {
+        targetContentZIndex = -1f
     }
 }

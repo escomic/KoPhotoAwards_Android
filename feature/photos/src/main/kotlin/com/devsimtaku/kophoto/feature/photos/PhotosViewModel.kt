@@ -22,7 +22,7 @@ class PhotosViewModel @Inject constructor(
     override fun handleEvent(event: PhotosUiEvent) {
         when (event) {
             is PhotosUiEvent.OnPhotoClick -> {
-                sendEffect(PhotosUiEffect.NavigateToDetail(event.id))
+                sendEffect(PhotosUiEffect.NavigateToDetail(event.photo))
             }
         }
     }

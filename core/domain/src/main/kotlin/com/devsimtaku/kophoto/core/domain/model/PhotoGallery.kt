@@ -6,6 +6,6 @@ data class PhotoGallery(
     val imageUrl: String,
     val photographer: String?,
     val location: String?,
-    val createdTime: String?,
+    val date: String?,
     val searchKeyword: String?,
 )

@@ -22,7 +22,7 @@ class RewardsViewModel @Inject constructor(
     override fun handleEvent(event: RewardsUiEvent) {
         when (event) {
             is RewardsUiEvent.OnPhotoClick -> {
-                sendEffect(RewardsUiEffect.NavigateToDetail(event.id))
+                sendEffect(RewardsUiEffect.NavigateToDetail(event.reward))
             }
         }
     }

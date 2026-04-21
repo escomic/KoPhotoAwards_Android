@@ -1,11 +1,13 @@
 package com.devsimtaku.kophoto.feature.rewards.contract
 
-class RewardsUiState
+import com.devsimtaku.kophoto.core.domain.model.PhotoAward
+
+class RewardsUiState()
 
 sealed interface RewardsUiEvent {
-    data class OnPhotoClick(val id: String) : RewardsUiEvent
+    data class OnPhotoClick(val reward: PhotoAward) : RewardsUiEvent
 }
 
 sealed interface RewardsUiEffect {
-    data class NavigateToDetail(val id: String) : RewardsUiEffect
+    data class NavigateToDetail(val reward: PhotoAward) : RewardsUiEffect
 }

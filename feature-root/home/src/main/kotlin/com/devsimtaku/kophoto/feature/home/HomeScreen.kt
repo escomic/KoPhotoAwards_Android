@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
+import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import com.devsimtaku.kophoto.core.navigation.rememberNavigationState
 import com.devsimtaku.kophoto.core.navigation.toBackStack
 import com.devsimtaku.kophoto.feature.photos.navigation.PhotosNavKey
@@ -31,7 +32,7 @@ import com.devsimtaku.kophoto.feature.rewards.navigation.rewardsEntry
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    onPhotoClick: (String) -> Unit
+    onPhotoClick: (PhotoDetail) -> Unit
 ) {
     val navigationState = rememberNavigationState(
         startKey = PhotosNavKey,

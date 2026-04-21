@@ -7,7 +7,7 @@ import com.devsimtaku.kophoto.core.network.model.PhotoGalleryItem
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface PhotoAwardApi {
+interface KoPhotoApi {
     @GET("B551011/PhokoAwrdService/phokoAwrdList")
     suspend fun getPhotoAwardList(
         @Query("numOfRows") numOfRows: Int? = 10,
