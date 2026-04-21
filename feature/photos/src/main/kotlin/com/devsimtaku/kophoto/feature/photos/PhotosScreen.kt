@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
@@ -46,23 +45,19 @@ fun PhotosScreen(
         }
     }
 
-    Scaffold(
-        modifier = modifier.fillMaxSize()
-    ) { innerPadding ->
-        val isRefreshing = photos.loadState.refresh is LoadState.Loading
+    val isRefreshing = photos.loadState.refresh is LoadState.Loading
 
-        PullToRefreshBox(
-            modifier = Modifier.padding(innerPadding),
-            isRefreshing = isRefreshing,
-            onRefresh = { photos.refresh() }
-        ) {
-            PhotosContent(
-                photos = photos,
-                onPhotoClick = { id ->
-                    viewModel.sendEvent(PhotosUiEvent.OnPhotoClick(id))
-                }
-            )
-        }
+    PullToRefreshBox(
+        modifier = modifier.fillMaxSize(),
+        isRefreshing = isRefreshing,
+        onRefresh = { photos.refresh() }
+    ) {
+        PhotosContent(
+            photos = photos,
+            onPhotoClick = { id ->
+                viewModel.sendEvent(PhotosUiEvent.OnPhotoClick(id))
+            }
+        )
     }
 }
 

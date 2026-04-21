@@ -1,10 +1,8 @@
 package com.devsimtaku.kophoto.feature.rewards
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,23 +38,19 @@ fun RewardsScreen(
         }
     }
 
-    Scaffold(
-        modifier = modifier.fillMaxSize()
-    ) { innerPadding ->
-        val isRefreshing = rewards.loadState.refresh is LoadState.Loading
+    val isRefreshing = rewards.loadState.refresh is LoadState.Loading
 
-        PullToRefreshBox(
-            modifier = Modifier.padding(innerPadding),
-            isRefreshing = isRefreshing,
-            onRefresh = { rewards.refresh() }
-        ) {
-            RewardsContent(
-                rewards = rewards,
-                onPhotoClick = { id ->
-                    viewModel.sendEvent(RewardsUiEvent.OnPhotoClick(id))
-                }
-            )
-        }
+    PullToRefreshBox(
+        modifier = modifier.fillMaxSize(),
+        isRefreshing = isRefreshing,
+        onRefresh = { rewards.refresh() }
+    ) {
+        RewardsContent(
+            rewards = rewards,
+            onPhotoClick = { id ->
+                viewModel.sendEvent(RewardsUiEvent.OnPhotoClick(id))
+            }
+        )
     }
 }
 

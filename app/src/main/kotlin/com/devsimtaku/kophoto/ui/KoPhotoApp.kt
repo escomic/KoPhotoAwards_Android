@@ -1,5 +1,8 @@
 package com.devsimtaku.kophoto.ui
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -14,9 +17,8 @@ import androidx.navigation3.ui.NavDisplay
 import com.devsimtaku.kophoto.core.navigation.Navigator
 import com.devsimtaku.kophoto.core.navigation.rememberNavigationState
 import com.devsimtaku.kophoto.core.navigation.toBackStack
-import com.devsimtaku.kophoto.feature.photos.navigation.PhotosNavKey
-import com.devsimtaku.kophoto.feature.photos.navigation.photosEntry
-import com.devsimtaku.kophoto.feature.rewards.navigation.rewardsEntry
+import com.devsimtaku.kophoto.feature.home.navigation.HomeNavKey
+import com.devsimtaku.kophoto.feature.home.navigation.homeEntry
 import com.devsimtaku.kophoto.navigation.navigateToPhotoDetail
 import com.devsimtaku.kophoto.photodetail.navigation.photoDetailEntry
 
@@ -24,20 +26,17 @@ import com.devsimtaku.kophoto.photodetail.navigation.photoDetailEntry
 @Composable
 fun KoPhotoApp() {
     val navigationState = rememberNavigationState(
-        startKey = PhotosNavKey,
+        startKey = HomeNavKey,
         topLevelKeys = remember {
             setOf(
-                PhotosNavKey
+                HomeNavKey
             )
         }
     )
     val backStack = navigationState.toBackStack()
     val navigator = remember { Navigator(navigationState) }
     val entryProvider = entryProvider {
-        photosEntry(
-            onPhotoClick = navigator::navigateToPhotoDetail
-        )
-        rewardsEntry(
+        homeEntry(
             onPhotoClick = navigator::navigateToPhotoDetail
         )
         photoDetailEntry(
