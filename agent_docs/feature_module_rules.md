@@ -39,13 +39,27 @@ fun EntryProviderScope<NavKey>.exampleEntry(
 ## 4. App 통합 (KoPhotoApp.kt)
 새로운 Feature를 추가한 후에는 반드시 `:app` 모듈의 `KoPhotoApp.kt`에 등록해야 합니다.
 
-1. `entryProvider` 블록 내에 정의한 `EntryProvider` 확장 함수를 추가합니다.
-2. 화면 이동이 필요한 경우 `Navigator` 확장 함수(`NavigatorExt.kt`)를 정의하고 호출합니다.
+1. `app/build.gradle.kts`의 `dependencies`에 `implementation(projects.feature.name)`를 추가합니다.
+2. `entryProvider` 블록 내에 정의한 `EntryProvider` 확장 함수를 추가합니다.
+3. 화면 이동이 필요한 경우 `Navigator` 확장 함수(`NavigatorExt.kt`)를 정의하고 호출합니다.
 
-## 5. UI 및 리소스
+## 5. Summary Checklist
+- [ ] Module created and added to `settings.gradle.kts`
+- [ ] `build.gradle.kts` configured with Hilt, Compose, and Nav3
+- [ ] `NavKey` defined with `@Serializable`
+- [ ] `EntryProvider` extension created
+- [ ] MVI Contract (UiState, UiEvent, UiEffect) implemented
+- [ ] `ViewModel` with `@AssistedInject` and `AssistedFactory`
+- [ ] `Screen` with `hiltViewModel(creationCallback = ...)`
+- [ ] Dependency added to `:app` module
+- [ ] Entry registered in `KoPhotoApp.kt`
+
+## 6. UI 및 리소스
 - 모든 Compose UI는 `Preview`를 포함해야 합니다.
-- 하드코딩된 문자열 대신 `strings.xml` 리소스를 사용합니다.
-- 다국어(기본/KO) 대응을 위해 `values/strings.xml`과 `values-ko/strings.xml`을 모두 고려합니다.
+- **문자열 리소스 관리 (Hybrid)**:
+    - **공통 문자열**: `Confirm`, `Cancel`, `Back` 등 앱 전역 공용어는 `:core:ui`의 `strings.xml`에 정의하고 `core_` 접두어를 사용한다.
+    - **피처 전용 문자열**: 각 화면의 타이틀이나 고유 문구는 해당 모듈 내에 정의하고 `feature_{name}_` 접두어를 사용한다.
+- 다국어(기본/KO) 대응을 위해 `values/strings.xml`과 `values-ko/strings.xml`을 모두 생성한다.
 
 ---
 **주의**: 새로운 모듈 생성 시 이 문서를 먼저 읽고 구조를 설계하십시오.

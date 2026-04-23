@@ -20,7 +20,9 @@ import com.devsimtaku.kophoto.core.navigation.rememberNavigationState
 import com.devsimtaku.kophoto.core.navigation.toBackStack
 import com.devsimtaku.kophoto.feature.home.navigation.HomeNavKey
 import com.devsimtaku.kophoto.feature.home.navigation.homeEntry
+import com.devsimtaku.kophoto.feature.search.navigation.searchEntry
 import com.devsimtaku.kophoto.navigation.navigateToPhotoDetail
+import com.devsimtaku.kophoto.navigation.navigateToSearch
 import com.devsimtaku.kophoto.feature.photodetail.navigation.photoDetailEntry
 
 @PreviewScreenSizes
@@ -38,10 +40,15 @@ fun KoPhotoApp() {
     val navigator = remember { Navigator(navigationState) }
     val entryProvider = entryProvider {
         homeEntry(
-            onPhotoClick = navigator::navigateToPhotoDetail
+            onPhotoClick = navigator::navigateToPhotoDetail,
+            onSearchClick = navigator::navigateToSearch
         )
         photoDetailEntry(
             onBackClick = navigator::goBack
+        )
+        searchEntry(
+            onBackClick = navigator::goBack,
+            onPhotoClick = navigator::navigateToPhotoDetail
         )
     }
 

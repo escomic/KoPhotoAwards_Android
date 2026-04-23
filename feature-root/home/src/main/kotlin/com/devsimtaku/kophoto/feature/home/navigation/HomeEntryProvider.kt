@@ -6,10 +6,12 @@ import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import com.devsimtaku.kophoto.feature.home.HomeScreen
 
 fun EntryProviderScope<NavKey>.homeEntry(
+    onSearchClick: () -> Unit,
     onPhotoClick: (PhotoDetail) -> Unit
 ) {
     entry<HomeNavKey> {
         HomeScreen(
+            onSearchClick = onSearchClick,
             onPhotoClick = onPhotoClick
         )
     }

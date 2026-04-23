@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CardGiftcard
 import androidx.compose.material.icons.filled.PhotoLibrary
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
@@ -32,6 +34,7 @@ import com.devsimtaku.kophoto.feature.rewards.navigation.rewardsEntry
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
+    onSearchClick: () -> Unit,
     onPhotoClick: (PhotoDetail) -> Unit
 ) {
     val navigationState = rememberNavigationState(
@@ -78,6 +81,14 @@ fun HomeScreen(
                 CenterAlignedTopAppBar(
                     title = {
                         Text(text = "KoPhoto")
+                    },
+                    actions = {
+                        IconButton(onClick = onSearchClick) {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "Search"
+                            )
+                        }
                     }
                 )
             }
@@ -97,7 +108,7 @@ fun HomeScreen(
     }
 }
 
-enum class HomeDestination(
+private enum class HomeDestination(
     val label: String,
     val icon: ImageVector,
     val navKey: NavKey
