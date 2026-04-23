@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.devsimtaku.kophoto.photodetail"
+    namespace = "com.devsimtaku.kophoto.feature.photodetail"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1

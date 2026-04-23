@@ -21,7 +21,7 @@ import com.devsimtaku.kophoto.core.navigation.toBackStack
 import com.devsimtaku.kophoto.feature.home.navigation.HomeNavKey
 import com.devsimtaku.kophoto.feature.home.navigation.homeEntry
 import com.devsimtaku.kophoto.navigation.navigateToPhotoDetail
-import com.devsimtaku.kophoto.photodetail.navigation.photoDetailEntry
+import com.devsimtaku.kophoto.feature.photodetail.navigation.photoDetailEntry
 
 @PreviewScreenSizes
 @Composable

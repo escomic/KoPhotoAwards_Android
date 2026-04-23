@@ -2,7 +2,7 @@ package com.devsimtaku.kophoto.navigation
 
 import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import com.devsimtaku.kophoto.core.navigation.Navigator
-import com.devsimtaku.kophoto.photodetail.navigation.PhotoDetailNavKey
+import com.devsimtaku.kophoto.feature.photodetail.navigation.PhotoDetailNavKey
 
 /**
  * Extension to navigate to the PhotoDetail screen.

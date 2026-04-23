@@ -1,10 +1,10 @@
-package com.devsimtaku.kophoto.photodetail
+package com.devsimtaku.kophoto.feature.photodetail
 
 import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import com.devsimtaku.kophoto.core.ui.mvi.BaseViewModel
-import com.devsimtaku.kophoto.photodetail.contract.PhotoDetailUiEffect
-import com.devsimtaku.kophoto.photodetail.contract.PhotoDetailUiEvent
-import com.devsimtaku.kophoto.photodetail.contract.PhotoDetailUiState
+import com.devsimtaku.kophoto.feature.photodetail.contract.PhotoDetailUiEffect
+import com.devsimtaku.kophoto.feature.photodetail.contract.PhotoDetailUiEvent
+import com.devsimtaku.kophoto.feature.photodetail.contract.PhotoDetailUiState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

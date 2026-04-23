@@ -1,4 +1,4 @@
-package com.devsimtaku.kophoto.photodetail.navigation
+package com.devsimtaku.kophoto.feature.photodetail.navigation
 
 import androidx.navigation3.runtime.NavKey
 import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
