@@ -50,7 +50,27 @@ class KoPhotoRepositoryImpl @Inject constructor(
             pagingSourceFactory = {
                 PhotoGalleryPagingSource(
                     photoDataSource = photoDataSource,
-                    arrange = arrange
+                    arrange = arrange,
+                    query = null
+                )
+            }
+        ).flow
+    }
+
+    override fun searchGalleryList(
+        query: String,
+        arrange: String?
+    ): Flow<PagingData<PhotoGallery>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = {
+                PhotoGalleryPagingSource(
+                    photoDataSource = photoDataSource,
+                    arrange = arrange,
+                    query = query
                 )
             }
         ).flow

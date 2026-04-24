@@ -1,7 +1,12 @@
 package com.devsimtaku.kophoto.core.network.model
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.JsonTransformingSerializer
 
 @Serializable
 data class KoPhotoResponse<T>(
@@ -28,6 +33,7 @@ data class KoPhotoHeader(
 @Serializable
 data class KoPhotoListBody<T>(
     @SerialName("items")
+    @Serializable(with = KoPhotoItemsSerializer::class)
     val items: KoPhotoItems<T>? = null,
     @SerialName("numOfRows")
     val numOfRows: Int,
@@ -42,3 +48,14 @@ data class KoPhotoItems<T>(
     @SerialName("item")
     val item: List<T> = emptyList()
 )
+
+class KoPhotoItemsSerializer<T>(tSerializer: KSerializer<T>) :
+    JsonTransformingSerializer<KoPhotoItems<T>>(KoPhotoItems.serializer(tSerializer)) {
+    override fun transformDeserialize(element: JsonElement): JsonElement {
+        return if (element is JsonPrimitive && element.isString && element.content.isEmpty()) {
+            JsonObject(emptyMap())
+        } else {
+            element
+        }
+    }
+}

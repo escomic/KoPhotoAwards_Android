@@ -30,6 +30,7 @@
 - **State**: UI가 표시할 단일 상태 객체
 - **Intent (Event)**: 사용자의 액션 또는 시스템 이벤트
 - **Effect (Side Effect)**: Toast, Navigation 등 단발성 이벤트
+- 모든 `ViewModel`은 `core:ui` 모듈의 `BaseViewModel`을 상속받아 구현해야 합니다.
 
 ## 🛠 Tech Stack
 - **UI**: Jetpack Compose
@@ -52,6 +53,7 @@
 6. **Dependency Management**:
     - `libs.versions.toml`에 새로운 항목 추가 시 알파벳 순서를 유지합니다.
     - `build.gradle.kts`에 의존성 추가 시 알파벳 순서로 정렬하여 가독성을 높입니다.
+7. **Import Optimization**: 코드 수정 후에는 사용하지 않는 import 문을 반드시 정리(Optimize Imports)해야 합니다.
 
 ## 🗺 Roadmap
 - [x] 프로젝트 모듈화 및 내비게이션 구조 설계

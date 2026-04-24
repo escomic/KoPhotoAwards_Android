@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.paging.compose)
     implementation(libs.hilt.android)
 
     implementation(libs.androidx.navigation3.runtime)

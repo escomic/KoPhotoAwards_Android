@@ -20,4 +20,11 @@ interface PhotoDataSource {
         pageNo: Int? = 1,
         arrange: String? = "C"
     ): KoPhotoResponse<KoPhotoListBody<PhotoGalleryItem>>
+
+    suspend fun searchGalleryList(
+        numOfRows: Int? = 10,
+        pageNo: Int? = 1,
+        arrange: String? = "C",
+        keyword: String
+    ): KoPhotoResponse<KoPhotoListBody<PhotoGalleryItem>>
 }

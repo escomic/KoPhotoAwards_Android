@@ -8,17 +8,27 @@ import com.devsimtaku.kophoto.core.network.PhotoDataSource
 
 class PhotoGalleryPagingSource(
     private val photoDataSource: PhotoDataSource,
-    private val arrange: String?
+    private val arrange: String?,
+    private val query: String? = null
 ) : PagingSource<Int, PhotoGallery>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PhotoGallery> {
         val page = params.key ?: 1
         return try {
-            val response = photoDataSource.getGalleryList(
-                numOfRows = params.loadSize,
-                pageNo = page,
-                arrange = arrange
-            )
+            val response = if (query != null) {
+                photoDataSource.searchGalleryList(
+                    numOfRows = params.loadSize,
+                    pageNo = page,
+                    arrange = arrange,
+                    keyword = query
+                )
+            } else {
+                photoDataSource.getGalleryList(
+                    numOfRows = params.loadSize,
+                    pageNo = page,
+                    arrange = arrange
+                )
+            }
             val items = response.response.body.items?.item?.map { it.asDomain() } ?: emptyList()
 
             LoadResult.Page(

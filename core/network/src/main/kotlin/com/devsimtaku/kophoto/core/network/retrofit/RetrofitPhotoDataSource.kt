@@ -38,4 +38,18 @@ class RetrofitPhotoDataSource(
             arrange = arrange
         )
     }
+
+    override suspend fun searchGalleryList(
+        numOfRows: Int?,
+        pageNo: Int?,
+        arrange: String?,
+        keyword: String
+    ): KoPhotoResponse<KoPhotoListBody<PhotoGalleryItem>> {
+        return koPhotoApi.searchGalleryList(
+            numOfRows = numOfRows,
+            pageNo = pageNo,
+            arrange = arrange,
+            keyword = keyword
+        )
+    }
 }

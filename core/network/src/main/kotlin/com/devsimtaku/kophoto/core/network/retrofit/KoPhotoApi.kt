@@ -30,4 +30,15 @@ interface KoPhotoApi {
         @Query("_type") type: String = "json",
         @Query("arrange") arrange: String? = "C"
     ): KoPhotoResponse<KoPhotoListBody<PhotoGalleryItem>>
+
+    @GET("B551011/PhotoGalleryService1/gallerySearchList1")
+    suspend fun searchGalleryList(
+        @Query("numOfRows") numOfRows: Int? = 10,
+        @Query("pageNo") pageNo: Int? = 1,
+        @Query("MobileOS") mobileOS: String = "AND",
+        @Query("MobileApp") mobileApp: String = "KoPhotos",
+        @Query("_type") type: String = "json",
+        @Query("arrange") arrange: String? = "C",
+        @Query("keyword") keyword: String
+    ): KoPhotoResponse<KoPhotoListBody<PhotoGalleryItem>>
 }

@@ -6,6 +6,8 @@
 - **위치**: `:feature:name` 또는 `:feature-root:name`
 - **패키지**: `com.devsimtaku.kophoto.feature.name`
 - **MVI 패턴 준수**: `contract/` 패키지 내에 `UiState`, `UiEvent`, `UiEffect`를 정의합니다.
+    - **실용적 접근**: 비즈니스 로직이 없는 단순 액션(예: 단순 화면 뒤로가기, 파라미터가 없는 단순 내비게이션 등)의 경우에는 ViewModel을 거치지 않고 UI 레이어에서 바로 콜백 처리가 가능합니다.
+- **BaseViewModel 상속**: 모든 `ViewModel`은 `:core:ui` 모듈의 `BaseViewModel`을 상속받아 구현해야 합니다.
 
 ## 2. Navigation 3 구현 규칙
 모든 내비게이션 관련 파일은 해당 모듈의 `navigation` 패키지 내에 위치해야 합니다.

@@ -18,4 +18,8 @@ interface KoPhotoRepository {
         arrange: String? = "C"
     ): Flow<PagingData<PhotoGallery>>
 
+    fun searchGalleryList(
+        query: String,
+        arrange: String? = "C"
+    ): Flow<PagingData<PhotoGallery>>
 }

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_search_title">Search</string>
+    <string name="feature_search_placeholder">Enter keyword</string>
+    <string name="feature_search_empty">No search results found.</string>
 </resources>
