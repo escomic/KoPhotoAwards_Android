@@ -44,7 +44,8 @@ fun KoPhotoApp() {
             onSearchClick = navigator::navigateToSearch
         )
         photoDetailEntry(
-            onBackClick = navigator::goBack
+            onBackClick = navigator::goBack,
+            onNavigateToSearch = navigator::navigateToSearch
         )
         searchEntry(
             onBackClick = navigator::goBack,

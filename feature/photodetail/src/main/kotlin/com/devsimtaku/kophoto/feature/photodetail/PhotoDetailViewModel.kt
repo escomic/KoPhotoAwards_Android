@@ -22,6 +22,10 @@ class PhotoDetailViewModel @AssistedInject constructor(
     }
 
     override fun handleEvent(event: PhotoDetailUiEvent) {
-        // Handle events
+        when (event) {
+            is PhotoDetailUiEvent.OnKeywordClick -> {
+                sendEffect(PhotoDetailUiEffect.NavigateToSearch(event.keyword))
+            }
+        }
     }
 }

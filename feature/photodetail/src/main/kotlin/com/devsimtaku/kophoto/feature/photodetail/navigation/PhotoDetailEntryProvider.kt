@@ -5,12 +5,14 @@ import androidx.navigation3.runtime.NavKey
 import com.devsimtaku.kophoto.feature.photodetail.PhotoDetailScreen
 
 fun EntryProviderScope<NavKey>.photoDetailEntry(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onNavigateToSearch: (String) -> Unit
 ) {
     entry<PhotoDetailNavKey> { key ->
         PhotoDetailScreen(
             item = key.item,
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            onNavigateToSearch = onNavigateToSearch
         )
     }
 }
