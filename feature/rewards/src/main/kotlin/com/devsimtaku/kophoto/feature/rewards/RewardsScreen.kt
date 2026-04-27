@@ -1,13 +1,19 @@
 package com.devsimtaku.kophoto.feature.rewards
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
@@ -64,8 +70,20 @@ private fun RewardsContent(
     onPhotoClick: (PhotoAward) -> Unit
 ) {
     LazyColumn(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(32.dp)
     ) {
+        item {
+            Text(
+                text = "수상작",
+                style = MaterialTheme.typography.displaySmall,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+
         items(
             count = rewards.itemCount,
             key = rewards.itemKey { it.id }

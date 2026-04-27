@@ -1,5 +1,6 @@
 package com.devsimtaku.kophoto.feature.photos
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -71,8 +72,20 @@ private fun PhotosContent(
     onPhotoClick: (PhotoGallery) -> Unit
 ) {
     LazyColumn(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(32.dp)
     ) {
+        item {
+            Text(
+                text = "한국관광갤러리",
+                style = MaterialTheme.typography.displaySmall,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+
         items(
             count = photos.itemCount,
             key = photos.itemKey { it.id }

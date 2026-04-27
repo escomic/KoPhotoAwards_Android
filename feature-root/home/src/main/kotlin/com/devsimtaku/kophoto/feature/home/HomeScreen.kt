@@ -14,7 +14,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -22,6 +21,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
+import com.devsimtaku.kophoto.core.designsystem.component.KPNavigationSuiteScaffold
 import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import com.devsimtaku.kophoto.core.navigation.rememberNavigationState
 import com.devsimtaku.kophoto.core.navigation.toBackStack
@@ -49,21 +49,23 @@ fun HomeScreen(
     val backStack = navigationState.toBackStack()
     val navigator = rememberHomeNavigator(navigationState)
 
-    NavigationSuiteScaffold(
+    KPNavigationSuiteScaffold(
         modifier = modifier,
         navigationSuiteItems = {
             HomeDestination.entries.forEach { destination ->
                 item(
-                    icon = {
-                        Icon(
-                            imageVector = destination.icon,
-                            contentDescription = destination.label
-                        )
-                    },
-                    label = { Text(text = destination.label) },
                     selected = backStack.last() == destination.navKey,
                     onClick = {
                         navigator.navigate(destination.navKey)
+                    },
+                    icon = {
+                        Icon(
+                            imageVector = destination.icon,
+                            contentDescription = null,
+                        )
+                    },
+                    label = {
+                        Text(text = destination.label)
                     }
                 )
             }
@@ -79,9 +81,7 @@ fun HomeScreen(
         Scaffold(
             topBar = {
                 CenterAlignedTopAppBar(
-                    title = {
-                        Text(text = "KoPhoto")
-                    },
+                    title = {},
                     actions = {
                         IconButton(onClick = onSearchClick) {
                             Icon(
