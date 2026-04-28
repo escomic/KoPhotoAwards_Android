@@ -2,10 +2,12 @@ package com.devsimtaku.kophoto.feature.search
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -19,15 +21,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -39,6 +39,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.devsimtaku.kophoto.core.designsystem.component.KPLoadingIndicator
 import com.devsimtaku.kophoto.core.designsystem.component.KPPhotoItem
+import com.devsimtaku.kophoto.core.designsystem.component.KPTextField
 import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import com.devsimtaku.kophoto.core.domain.model.PhotoGallery
 import com.devsimtaku.kophoto.feature.search.contract.SearchUiEvent
@@ -104,31 +105,36 @@ private fun SearchBar(
     onClearQuery: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    TextField(
+    KPTextField(
         value = query,
         onValueChange = onQueryChange,
         modifier = modifier.fillMaxWidth(),
-        placeholder = { Text(text = stringResource(R.string.feature_search_placeholder)) },
+        hint = stringResource(R.string.feature_search_placeholder),
         leadingIcon = {
-            Icon(imageVector = Icons.Default.Search, contentDescription = null)
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(24.dp)
+            )
         },
         trailingIcon = {
             if (query.isNotEmpty()) {
-                IconButton(onClick = onClearQuery) {
-                    Icon(imageVector = Icons.Default.Close, contentDescription = null)
+                IconButton(
+                    modifier = Modifier.size(24.dp),
+                    onClick = onClearQuery
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(24.dp)
+                    )
                 }
             }
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(onSearch = { onSearch() }),
-        singleLine = true,
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = Color.Transparent,
-            unfocusedContainerColor = Color.Transparent,
-            disabledContainerColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent
-        )
+        keyboardActions = KeyboardActions(onSearch = { onSearch() })
     )
 }
 
@@ -147,12 +153,18 @@ private fun SearchContent(
     val isError = photos.loadState.refresh is LoadState.Error
     val isEmpty = photos.loadState.refresh is LoadState.NotLoading && photos.itemCount == 0
 
-    LazyColumn(modifier = modifier) {
+    LazyColumn(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(32.dp)
+    ) {
         stickyHeader {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.surface)
+                    .padding(top = 12.dp, bottom = 4.dp)
             ) {
                 SearchBar(
                     query = searchQuery,
@@ -171,7 +183,9 @@ private fun SearchContent(
             isRefreshLoading -> {
                 item {
                     Box(
-                        modifier = Modifier.fillParentMaxSize(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 64.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         KPLoadingIndicator()
@@ -183,7 +197,9 @@ private fun SearchContent(
                 val error = (photos.loadState.refresh as LoadState.Error).error
                 item {
                     Box(
-                        modifier = Modifier.fillParentMaxSize(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 64.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
@@ -199,10 +215,14 @@ private fun SearchContent(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 30.dp),
+                            .padding(vertical = 64.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = stringResource(R.string.feature_search_empty))
+                        Text(
+                            text = stringResource(R.string.feature_search_empty),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
                     }
                 }
             }
