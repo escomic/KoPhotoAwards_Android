@@ -54,6 +54,7 @@
     - `libs.versions.toml`에 새로운 항목 추가 시 알파벳 순서를 유지합니다.
     - `build.gradle.kts`에 의존성 추가 시 알파벳 순서로 정렬하여 가독성을 높입니다.
 7. **Import Optimization**: 코드 수정 후에는 사용하지 않는 import 문을 반드시 정리(Optimize Imports)해야 합니다.
+8. **Common Rules Compliance**: 모든 에이전트는 [agent_docs/common_rule.md](agent_docs/common_rule.md)에 명시된 테스트 및 보안 관련 공통 규칙을 반드시 숙지하고 준수해야 합니다.
 
 ## 🗺 Roadmap
 - [x] 프로젝트 모듈화 및 내비게이션 구조 설계
@@ -61,4 +62,4 @@
 - [x] 사진 상세 정보(PhotoDetail) UI 구현
 - [x] 검색 기능 구현
 - [x] 이미지 뷰어 기능
-- [ ] 관심 사진 저장 (Local DB)
+- [x] 관심 사진 저장 (Local DB)
