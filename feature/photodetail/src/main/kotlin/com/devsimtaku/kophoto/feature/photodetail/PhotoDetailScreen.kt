@@ -1,12 +1,12 @@
 package com.devsimtaku.kophoto.feature.photodetail
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -68,7 +68,8 @@ fun PhotoDetailScreen(
         key = item.contentId
     ),
     onBackClick: () -> Unit,
-    onNavigateToSearch: (String) -> Unit
+    onNavigateToSearch: (String) -> Unit,
+    onImageClick: (String, String?) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val args = uiState.item
@@ -82,6 +83,9 @@ fun PhotoDetailScreen(
                 }
                 is PhotoDetailUiEffect.ShowErrorDialog -> {
                     errorToShow = effect.throwable
+                }
+                is PhotoDetailUiEffect.NavigateToImageViewer -> {
+                    onImageClick(effect.imageUrl, effect.title)
                 }
             }
         }
@@ -126,7 +130,10 @@ fun PhotoDetailScreen(
                     contentDescription = args.title,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(32.dp)),
+                        .clip(RoundedCornerShape(32.dp))
+                        .clickable {
+                            viewModel.sendEvent(PhotoDetailUiEvent.OnImageClick(args.imageUrl, args.title))
+                        },
                     contentScale = ContentScale.FillWidth
                 )
 

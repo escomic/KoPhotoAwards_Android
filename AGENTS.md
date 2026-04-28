@@ -59,6 +59,6 @@
 - [x] 프로젝트 모듈화 및 내비게이션 구조 설계
 - [x] Open API 연동 및 기본 리스트 구현 (Photos, Rewards)
 - [x] 사진 상세 정보(PhotoDetail) UI 구현
-- [ ] 검색 기능 구현
-- [ ] 이미지 뷰어 기능 (Full Screen, Zoom)
+- [x] 검색 기능 구현
+- [x] 이미지 뷰어 기능
 - [ ] 관심 사진 저장 (Local DB)

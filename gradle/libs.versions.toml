@@ -28,6 +28,7 @@ okhttp = "5.3.2"
 androidxPaging3 = "3.3.6"
 retrofit = "3.0.0"
 turbine = "1.1.0"
+telephoto = "0.14.0"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
@@ -71,6 +72,7 @@ okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor",
 okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-kotlin-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
+telephoto-zoomable-image-coil = { group = "me.saket.telephoto", name = "zoomable-image-coil3", version.ref = "telephoto" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

@@ -26,6 +26,9 @@ class PhotoDetailViewModel @AssistedInject constructor(
             is PhotoDetailUiEvent.OnKeywordClick -> {
                 sendEffect(PhotoDetailUiEffect.NavigateToSearch(event.keyword))
             }
+            is PhotoDetailUiEvent.OnImageClick -> {
+                sendEffect(PhotoDetailUiEffect.NavigateToImageViewer(event.imageUrl, event.title))
+            }
         }
     }
 }

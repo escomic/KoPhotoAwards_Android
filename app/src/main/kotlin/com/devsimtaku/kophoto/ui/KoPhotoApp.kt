@@ -20,10 +20,12 @@ import com.devsimtaku.kophoto.core.navigation.rememberNavigationState
 import com.devsimtaku.kophoto.core.navigation.toBackStack
 import com.devsimtaku.kophoto.feature.home.navigation.HomeNavKey
 import com.devsimtaku.kophoto.feature.home.navigation.homeEntry
+import com.devsimtaku.kophoto.feature.imageviewer.navigation.imageViewerEntry
+import com.devsimtaku.kophoto.feature.photodetail.navigation.photoDetailEntry
 import com.devsimtaku.kophoto.feature.search.navigation.searchEntry
+import com.devsimtaku.kophoto.navigation.navigateToImageViewer
 import com.devsimtaku.kophoto.navigation.navigateToPhotoDetail
 import com.devsimtaku.kophoto.navigation.navigateToSearch
-import com.devsimtaku.kophoto.feature.photodetail.navigation.photoDetailEntry
 
 @PreviewScreenSizes
 @Composable
@@ -45,11 +47,15 @@ fun KoPhotoApp() {
         )
         photoDetailEntry(
             onBackClick = navigator::goBack,
-            onNavigateToSearch = navigator::navigateToSearch
+            onNavigateToSearch = navigator::navigateToSearch,
+            onImageClick = navigator::navigateToImageViewer
         )
         searchEntry(
             onBackClick = navigator::goBack,
             onPhotoClick = navigator::navigateToPhotoDetail
+        )
+        imageViewerEntry(
+            onBackClick = navigator::goBack
         )
     }
 

@@ -6,13 +6,15 @@ import com.devsimtaku.kophoto.feature.photodetail.PhotoDetailScreen
 
 fun EntryProviderScope<NavKey>.photoDetailEntry(
     onBackClick: () -> Unit,
-    onNavigateToSearch: (String) -> Unit
+    onNavigateToSearch: (String) -> Unit,
+    onImageClick: (String, String?) -> Unit
 ) {
     entry<PhotoDetailNavKey> { key ->
         PhotoDetailScreen(
             item = key.item,
             onBackClick = onBackClick,
-            onNavigateToSearch = onNavigateToSearch
+            onNavigateToSearch = onNavigateToSearch,
+            onImageClick = onImageClick
         )
     }
 }

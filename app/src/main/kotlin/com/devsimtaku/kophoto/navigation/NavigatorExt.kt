@@ -2,6 +2,7 @@ package com.devsimtaku.kophoto.navigation
 
 import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import com.devsimtaku.kophoto.core.navigation.Navigator
+import com.devsimtaku.kophoto.feature.imageviewer.navigation.ImageViewerNavKey
 import com.devsimtaku.kophoto.feature.photodetail.navigation.PhotoDetailNavKey
 import com.devsimtaku.kophoto.feature.search.navigation.SearchNavKey
 
@@ -24,5 +25,17 @@ fun Navigator.navigateToSearch(
 ) {
     navigate(
         key = SearchNavKey(query = query)
+    )
+}
+
+/**
+ * Extension to navigate to the ImageViewer screen.
+ */
+fun Navigator.navigateToImageViewer(
+    imageUrl: String,
+    title: String? = null
+) {
+    navigate(
+        key = ImageViewerNavKey(imageUrl = imageUrl, title = title)
     )
 }
