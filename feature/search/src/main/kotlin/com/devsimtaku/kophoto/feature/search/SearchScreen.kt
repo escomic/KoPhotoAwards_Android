@@ -45,6 +45,7 @@ import androidx.paging.compose.itemKey
 import com.devsimtaku.kophoto.core.designsystem.component.KPErrorDialog
 import com.devsimtaku.kophoto.core.designsystem.component.KPLoadingIndicator
 import com.devsimtaku.kophoto.core.designsystem.component.KPPhotoItem
+import com.devsimtaku.kophoto.core.designsystem.component.KPPhotoSkeletonItem
 import com.devsimtaku.kophoto.core.designsystem.component.KPTextField
 import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import com.devsimtaku.kophoto.core.domain.model.PhotoGallery
@@ -185,9 +186,9 @@ private fun SearchContent(
     onClearQuery: () -> Unit,
     onPhotoClick: (PhotoGallery) -> Unit
 ) {
-    val isRefreshLoading = photos.loadState.refresh is LoadState.Loading
+    val isInitialLoading = photos.loadState.refresh is LoadState.Loading && photos.itemCount == 0 && searchQuery.isNotBlank()
     val isError = photos.loadState.refresh is LoadState.Error
-    val isEmpty = photos.loadState.refresh is LoadState.NotLoading && photos.itemCount == 0
+    val isEmpty = photos.loadState.refresh is LoadState.NotLoading && photos.itemCount == 0 && searchQuery.isNotBlank()
 
     LazyColumn(
         modifier = modifier
@@ -217,16 +218,9 @@ private fun SearchContent(
         }
 
         when {
-            isRefreshLoading -> {
-                item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 64.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        KPLoadingIndicator()
-                    }
+            isInitialLoading -> {
+                items(5) {
+                    KPPhotoSkeletonItem()
                 }
             }
 

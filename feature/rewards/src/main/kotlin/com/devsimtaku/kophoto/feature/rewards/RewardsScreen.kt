@@ -1,6 +1,7 @@
 package com.devsimtaku.kophoto.feature.rewards
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,6 +32,7 @@ import androidx.paging.compose.itemKey
 import com.devsimtaku.kophoto.core.designsystem.component.KPErrorDialog
 import com.devsimtaku.kophoto.core.designsystem.component.KPLoadingIndicator
 import com.devsimtaku.kophoto.core.designsystem.component.KPPhotoItem
+import com.devsimtaku.kophoto.core.designsystem.component.KPPhotoSkeletonItem
 import com.devsimtaku.kophoto.core.domain.model.PhotoAward
 import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import com.devsimtaku.kophoto.core.ui.util.toErrorMessage
@@ -55,7 +57,6 @@ fun RewardsScreen(
                 is RewardsUiEffect.NavigateToDetail -> {
                     onPhotoClick(effect.reward.toArgs())
                 }
-
                 is RewardsUiEffect.ShowErrorDialog -> {
                     errorToShow = effect.throwable
                 }
@@ -77,7 +78,10 @@ fun RewardsScreen(
         )
     }
 
-    val isRefreshing = rewards.loadState.refresh is LoadState.Loading
+    // 첫 진입 로딩 여부
+    val isInitialLoading = rewards.loadState.refresh is LoadState.Loading && rewards.itemCount == 0
+    // 새로고침 인디케이터 표시 여부
+    val isRefreshing = rewards.loadState.refresh is LoadState.Loading && rewards.itemCount > 0
 
     PullToRefreshBox(
         modifier = modifier.fillMaxSize(),
@@ -86,6 +90,7 @@ fun RewardsScreen(
     ) {
         RewardsContent(
             rewards = rewards,
+            isInitialLoading = isInitialLoading,
             onPhotoClick = { reward ->
                 viewModel.sendEvent(RewardsUiEvent.OnPhotoClick(reward))
             }
@@ -97,6 +102,7 @@ fun RewardsScreen(
 private fun RewardsContent(
     modifier: Modifier = Modifier,
     rewards: LazyPagingItems<PhotoAward>,
+    isInitialLoading: Boolean,
     onPhotoClick: (PhotoAward) -> Unit
 ) {
     LazyColumn(
@@ -115,28 +121,33 @@ private fun RewardsContent(
             )
         }
 
-        items(
-            count = rewards.itemCount,
-            key = rewards.itemKey { it.id }
-        ) { index ->
-            rewards[index]?.let { reward ->
-                KPPhotoItem(
-                    imageUrl = reward.thumbnail ?: "",
-                    title = reward.title,
-                    photographer = reward.photographer,
-                    onClick = { onPhotoClick(reward) }
-                )
+        if (isInitialLoading) {
+            items(5) {
+                KPPhotoSkeletonItem()
             }
-        }
-
-        when (rewards.loadState.append) {
-            is LoadState.Loading -> {
-                item {
-                    KPLoadingIndicator()
+        } else {
+            items(
+                count = rewards.itemCount,
+                key = rewards.itemKey { it.id }
+            ) { index ->
+                rewards[index]?.let { reward ->
+                    KPPhotoItem(
+                        imageUrl = reward.thumbnail ?: "",
+                        title = reward.title,
+                        photographer = reward.photographer,
+                        onClick = { onPhotoClick(reward) }
+                    )
                 }
             }
 
-            else -> {}
+            when (rewards.loadState.append) {
+                is LoadState.Loading -> {
+                    item {
+                        KPLoadingIndicator()
+                    }
+                }
+                else -> {}
+            }
         }
     }
 }

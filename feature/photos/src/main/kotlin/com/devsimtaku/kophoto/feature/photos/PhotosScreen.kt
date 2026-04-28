@@ -1,6 +1,7 @@
 package com.devsimtaku.kophoto.feature.photos
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -31,6 +33,7 @@ import androidx.paging.compose.itemKey
 import com.devsimtaku.kophoto.core.designsystem.component.KPErrorDialog
 import com.devsimtaku.kophoto.core.designsystem.component.KPLoadingIndicator
 import com.devsimtaku.kophoto.core.designsystem.component.KPPhotoItem
+import com.devsimtaku.kophoto.core.designsystem.component.KPPhotoSkeletonItem
 import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import com.devsimtaku.kophoto.core.domain.model.PhotoGallery
 import com.devsimtaku.kophoto.core.ui.util.toErrorMessage
@@ -77,7 +80,10 @@ fun PhotosScreen(
         )
     }
 
-    val isRefreshing = photos.loadState.refresh is LoadState.Loading
+    // 첫 진입 로딩 여부 (데이터가 하나도 없을 때 로딩 중인 경우)
+    val isInitialLoading = photos.loadState.refresh is LoadState.Loading && photos.itemCount == 0
+    // 새로고침 인디케이터 표시 여부 (이미 데이터가 있을 때 로딩 중인 경우)
+    val isRefreshing = photos.loadState.refresh is LoadState.Loading && photos.itemCount > 0
 
     PullToRefreshBox(
         modifier = modifier.fillMaxSize(),
@@ -86,6 +92,7 @@ fun PhotosScreen(
     ) {
         PhotosContent(
             photos = photos,
+            isInitialLoading = isInitialLoading,
             onPhotoClick = { photo ->
                 viewModel.sendEvent(PhotosUiEvent.OnPhotoClick(photo))
             }
@@ -97,6 +104,7 @@ fun PhotosScreen(
 private fun PhotosContent(
     modifier: Modifier = Modifier,
     photos: LazyPagingItems<PhotoGallery>,
+    isInitialLoading: Boolean,
     onPhotoClick: (PhotoGallery) -> Unit
 ) {
     LazyColumn(
@@ -115,29 +123,33 @@ private fun PhotosContent(
             )
         }
 
-        items(
-            count = photos.itemCount,
-            key = photos.itemKey { it.id }
-        ) { index ->
-            photos[index]?.let { photo ->
-                KPPhotoItem(
-                    imageUrl = photo.imageUrl,
-                    title = photo.title,
-                    photographer = photo.photographer,
-                    onClick = { onPhotoClick(photo) }
-                )
+        if (isInitialLoading) {
+            items(5) {
+                KPPhotoSkeletonItem()
             }
-        }
-
-
-        when (photos.loadState.append) {
-            is LoadState.Loading -> {
-                item {
-                    KPLoadingIndicator()
+        } else {
+            items(
+                count = photos.itemCount,
+                key = photos.itemKey { it.id }
+            ) { index ->
+                photos[index]?.let { photo ->
+                    KPPhotoItem(
+                        imageUrl = photo.imageUrl,
+                        title = photo.title,
+                        photographer = photo.photographer,
+                        onClick = { onPhotoClick(photo) }
+                    )
                 }
             }
 
-            else -> {}
+            when (photos.loadState.append) {
+                is LoadState.Loading -> {
+                    item {
+                        KPLoadingIndicator()
+                    }
+                }
+                else -> {}
+            }
         }
     }
 }
@@ -153,3 +165,14 @@ private fun PhotoGallery.toArgs(): PhotoDetail = PhotoDetail(
     description = ""
 )
 
+@Composable
+private fun ErrorItem(message: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = message, color = MaterialTheme.colorScheme.error)
+    }
+}
