@@ -164,15 +164,3 @@ private fun PhotoGallery.toArgs(): PhotoDetail = PhotoDetail(
     keyword = searchKeyword ?: "",
     description = ""
 )
-
-@Composable
-private fun ErrorItem(message: String) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = message, color = MaterialTheme.colorScheme.error)
-    }
-}

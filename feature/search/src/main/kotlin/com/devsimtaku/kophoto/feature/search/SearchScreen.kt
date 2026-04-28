@@ -187,7 +187,6 @@ private fun SearchContent(
     onPhotoClick: (PhotoGallery) -> Unit
 ) {
     val isInitialLoading = photos.loadState.refresh is LoadState.Loading && photos.itemCount == 0 && searchQuery.isNotBlank()
-    val isError = photos.loadState.refresh is LoadState.Error
     val isEmpty = photos.loadState.refresh is LoadState.NotLoading && photos.itemCount == 0 && searchQuery.isNotBlank()
 
     LazyColumn(
@@ -221,23 +220,6 @@ private fun SearchContent(
             isInitialLoading -> {
                 items(5) {
                     KPPhotoSkeletonItem()
-                }
-            }
-
-            isError -> {
-                val error = (photos.loadState.refresh as LoadState.Error).error
-                item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 64.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = error.message ?: "Unknown Error",
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    }
                 }
             }
 
