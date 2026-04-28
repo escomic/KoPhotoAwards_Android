@@ -5,31 +5,33 @@ import androidx.paging.PagingState
 import com.devsimtaku.kophoto.core.data.mapper.asDomain
 import com.devsimtaku.kophoto.core.domain.model.PhotoGallery
 import com.devsimtaku.kophoto.core.network.PhotoDataSource
+import com.devsimtaku.kophoto.core.network.model.getOrThrow
 
 class PhotoGalleryPagingSource(
     private val photoDataSource: PhotoDataSource,
     private val arrange: String?,
-    private val query: String? = null
+    private val query: String?
 ) : PagingSource<Int, PhotoGallery>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PhotoGallery> {
         val page = params.key ?: 1
         return try {
-            val response = if (query != null) {
+            val responseBody = if (query.isNullOrEmpty()) {
+                photoDataSource.getGalleryList(
+                    numOfRows = params.loadSize,
+                    pageNo = page,
+                    arrange = arrange
+                ).getOrThrow()
+            } else {
                 photoDataSource.searchGalleryList(
                     numOfRows = params.loadSize,
                     pageNo = page,
                     arrange = arrange,
                     keyword = query
-                )
-            } else {
-                photoDataSource.getGalleryList(
-                    numOfRows = params.loadSize,
-                    pageNo = page,
-                    arrange = arrange
-                )
+                ).getOrThrow()
             }
-            val items = response.response.body.items?.item?.map { it.asDomain() } ?: emptyList()
+
+            val items = responseBody.items?.item?.map { it.asDomain() } ?: emptyList()
 
             LoadResult.Page(
                 data = items,

@@ -10,4 +10,5 @@ sealed interface PhotosUiEvent {
 
 sealed interface PhotosUiEffect {
     data class NavigateToDetail(val photo: PhotoGallery) : PhotosUiEffect
+    data class ShowErrorDialog(val throwable: Throwable) : PhotosUiEffect
 }

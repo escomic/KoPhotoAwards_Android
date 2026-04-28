@@ -6,7 +6,7 @@ import com.devsimtaku.kophoto.core.network.model.KoPhotoResponse
 import com.devsimtaku.kophoto.core.network.model.PhotoAwardItem
 import com.devsimtaku.kophoto.core.network.model.PhotoGalleryItem
 
-class RetrofitPhotoDataSource(
+internal class RetrofitPhotoDataSource(
     private val koPhotoApi: KoPhotoApi
 ) : PhotoDataSource {
     override suspend fun getPhotoAwardList(

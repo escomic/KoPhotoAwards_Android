@@ -5,6 +5,7 @@ import androidx.paging.PagingState
 import com.devsimtaku.kophoto.core.data.mapper.asDomain
 import com.devsimtaku.kophoto.core.domain.model.PhotoAward
 import com.devsimtaku.kophoto.core.network.PhotoDataSource
+import com.devsimtaku.kophoto.core.network.model.getOrThrow
 
 class PhotoAwardPagingSource(
     private val photoDataSource: PhotoDataSource,
@@ -17,15 +18,16 @@ class PhotoAwardPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PhotoAward> {
         val page = params.key ?: 1
         return try {
-            val response = photoDataSource.getPhotoAwardList(
+            val responseBody = photoDataSource.getPhotoAwardList(
                 numOfRows = params.loadSize,
                 pageNo = page,
                 arrange = arrange,
                 mdfcnDt = mdfcnDt,
                 lDongRegnCd = lDongRegnCd,
                 keyword = keyword
-            )
-            val items = response.response.body.items?.item?.map { it.asDomain() } ?: emptyList()
+            ).getOrThrow()
+            
+            val items = responseBody.items?.item?.map { it.asDomain() } ?: emptyList()
 
             LoadResult.Page(
                 data = items,

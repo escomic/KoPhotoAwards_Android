@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,11 +24,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -37,11 +42,14 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
+import com.devsimtaku.kophoto.core.designsystem.component.KPErrorDialog
 import com.devsimtaku.kophoto.core.designsystem.component.KPLoadingIndicator
 import com.devsimtaku.kophoto.core.designsystem.component.KPPhotoItem
 import com.devsimtaku.kophoto.core.designsystem.component.KPTextField
 import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import com.devsimtaku.kophoto.core.domain.model.PhotoGallery
+import com.devsimtaku.kophoto.core.ui.util.toErrorMessage
+import com.devsimtaku.kophoto.feature.search.contract.SearchUiEffect
 import com.devsimtaku.kophoto.feature.search.contract.SearchUiEvent
 import com.devsimtaku.kophoto.core.ui.R as CoreUiR
 
@@ -60,6 +68,34 @@ fun SearchScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val photos = viewModel.photos.collectAsLazyPagingItems()
     val focusManager = LocalFocusManager.current
+    var errorToShow by remember { mutableStateOf<Throwable?>(null) }
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            when (effect) {
+                is SearchUiEffect.ShowToast -> {
+                    // Toast handling if needed
+                }
+                is SearchUiEffect.ShowErrorDialog -> {
+                    errorToShow = effect.throwable
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(photos.loadState.refresh) {
+        if (photos.loadState.refresh is LoadState.Error) {
+            errorToShow = (photos.loadState.refresh as LoadState.Error).error
+        }
+    }
+
+    if (errorToShow != null) {
+        KPErrorDialog(
+            title = stringResource(id = CoreUiR.string.core_error),
+            message = errorToShow!!.toErrorMessage(LocalContext.current),
+            onDismissRequest = { errorToShow = null }
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -157,6 +193,7 @@ private fun SearchContent(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp),
+        contentPadding = PaddingValues(bottom = 32.dp),
         verticalArrangement = Arrangement.spacedBy(32.dp)
     ) {
         stickyHeader {

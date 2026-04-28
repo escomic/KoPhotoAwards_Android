@@ -10,4 +10,5 @@ sealed interface RewardsUiEvent {
 
 sealed interface RewardsUiEffect {
     data class NavigateToDetail(val reward: PhotoAward) : RewardsUiEffect
+    data class ShowErrorDialog(val throwable: Throwable) : RewardsUiEffect
 }

@@ -1,5 +1,7 @@
 package com.devsimtaku.kophoto.core.network.model
 
+import com.devsimtaku.kophoto.core.domain.model.KoPhotoApiException
+import com.devsimtaku.kophoto.core.domain.model.KoPhotoErrorCode
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -7,6 +9,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.JsonTransformingSerializer
+import java.io.IOException
 
 @Serializable
 data class KoPhotoResponse<T>(
@@ -29,6 +32,21 @@ data class KoPhotoHeader(
     @SerialName("resultMsg")
     val resultMsg: String
 )
+
+/**
+ * 응답 결과를 검증하고 성공 시 body를 반환, 실패 시 예외를 던지는 확장 함수
+ */
+fun <T> KoPhotoResponse<T>.getOrThrow(): T {
+    val header = response.header
+    val errorCode = KoPhotoErrorCode.fromCode(header.resultCode)
+
+    return when (errorCode) {
+        KoPhotoErrorCode.NORMAL,
+        KoPhotoErrorCode.NORMAL_ALT,
+        KoPhotoErrorCode.NORMAL_FULL -> response.body
+        else -> throw KoPhotoApiException(errorCode, header.resultMsg)
+    }
+}
 
 @Serializable
 data class KoPhotoListBody<T>(

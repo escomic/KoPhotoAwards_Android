@@ -31,11 +31,15 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -44,10 +48,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.devsimtaku.kophoto.core.designsystem.component.KPAsyncImage
 import com.devsimtaku.kophoto.core.designsystem.component.KPChip
 import com.devsimtaku.kophoto.core.designsystem.component.KPChipStyle
+import com.devsimtaku.kophoto.core.designsystem.component.KPErrorDialog
 import com.devsimtaku.kophoto.core.designsystem.theme.KoPhotoTheme
 import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
+import com.devsimtaku.kophoto.core.ui.util.toErrorMessage
 import com.devsimtaku.kophoto.feature.photodetail.contract.PhotoDetailUiEffect
 import com.devsimtaku.kophoto.feature.photodetail.contract.PhotoDetailUiEvent
+import com.devsimtaku.kophoto.core.ui.R as CoreUiR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,6 +72,7 @@ fun PhotoDetailScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val args = uiState.item
+    var errorToShow by remember { mutableStateOf<Throwable?>(null) }
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
@@ -72,8 +80,19 @@ fun PhotoDetailScreen(
                 is PhotoDetailUiEffect.NavigateToSearch -> {
                     onNavigateToSearch(effect.keyword)
                 }
+                is PhotoDetailUiEffect.ShowErrorDialog -> {
+                    errorToShow = effect.throwable
+                }
             }
         }
+    }
+
+    if (errorToShow != null) {
+        KPErrorDialog(
+            title = stringResource(id = CoreUiR.string.core_error),
+            message = errorToShow!!.toErrorMessage(LocalContext.current),
+            onDismissRequest = { errorToShow = null }
+        )
     }
 
     Scaffold(

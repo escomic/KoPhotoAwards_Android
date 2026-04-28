@@ -2,14 +2,15 @@ package com.devsimtaku.kophoto.core.network.di
 
 import com.devsimtaku.kophoto.core.network.BuildConfig
 import com.devsimtaku.kophoto.core.network.PhotoDataSource
+import com.devsimtaku.kophoto.core.network.retrofit.ErrorInterceptor
 import com.devsimtaku.kophoto.core.network.retrofit.KoPhotoApi
 import com.devsimtaku.kophoto.core.network.retrofit.RetrofitPhotoDataSource
+import com.devsimtaku.kophoto.core.network.retrofit.ServiceKeyInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
-import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -41,22 +42,9 @@ object NetworkModule {
     fun provideOkHttpClient(
         @Named("serviceKey") serviceKey: String
     ): OkHttpClient {
-        val serviceKeyInterceptor = Interceptor { chain ->
-            val originalRequest = chain.request()
-            val originalUrl = originalRequest.url
-
-            val url = originalUrl.newBuilder()
-                .addQueryParameter("serviceKey", serviceKey)
-                .build()
-
-            val requestBuilder = originalRequest.newBuilder()
-                .url(url)
-
-            chain.proceed(requestBuilder.build())
-        }
-
         return OkHttpClient.Builder()
-            .addInterceptor(serviceKeyInterceptor)
+            .addInterceptor(ServiceKeyInterceptor(serviceKey))
+            .addInterceptor(ErrorInterceptor())
             .apply {
                 if (BuildConfig.DEBUG) {
                     addInterceptor(
