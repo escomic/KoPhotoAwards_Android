@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.devsimtaku.kophoto.feature.home"
+    namespace = "com.devsimtaku.kophoto.feature.bookmarks"
     compileSdk = 35
 
     defaultConfig {
@@ -34,11 +34,9 @@ android {
 
 dependencies {
     api(projects.core.navigation)
-    implementation(projects.core.domain)
-    implementation(projects.feature.photos)
-    implementation(projects.feature.rewards)
-    implementation(projects.feature.bookmarks)
     implementation(projects.core.designsystem)
+    implementation(projects.core.domain)
+    implementation(projects.core.ui)
 
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.androidx.compose.bom))
@@ -47,10 +45,10 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.material3.adaptive.navigation.suite)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation3.runtime)
-    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.savedstate.compose)
     implementation(libs.hilt.android)
 
     ksp(libs.hilt.compiler)

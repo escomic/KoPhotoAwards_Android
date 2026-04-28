@@ -3,6 +3,11 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
+ksp {
+    arg("room.generateKotlin", "true")
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 android {
     namespace = "com.devsimtaku.kophoto.core.data"
     compileSdk = 35
@@ -27,6 +32,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+    sourceSets {
+        getByName("androidTest").assets.srcDirs(file("$projectDir/schemas"))
+    }
 }
 
 dependencies {
@@ -37,6 +46,9 @@ dependencies {
     implementation(libs.androidx.navigation3.runtime)
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.savedstate.compose)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)

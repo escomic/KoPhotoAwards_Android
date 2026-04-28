@@ -46,6 +46,7 @@ dependencies {
     implementation(projects.feature.rewards)
     implementation(projects.feature.photos)
     implementation(projects.feature.photodetail)
+    implementation(projects.feature.bookmarks)
     implementation(projects.feature.imageviewer)
     implementation(projects.feature.search)
 

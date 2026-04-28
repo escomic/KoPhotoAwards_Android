@@ -3,6 +3,7 @@ package com.devsimtaku.kophoto.core.domain.repository
 import androidx.paging.PagingData
 import com.devsimtaku.kophoto.core.domain.model.PhotoAward
 import com.devsimtaku.kophoto.core.domain.model.PhotoGallery
+import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import kotlinx.coroutines.flow.Flow
 
 interface KoPhotoRepository {
@@ -22,4 +23,12 @@ interface KoPhotoRepository {
         query: String,
         arrange: String? = "C"
     ): Flow<PagingData<PhotoGallery>>
+
+    fun getBookmarks(): Flow<List<PhotoDetail>>
+
+    suspend fun addBookmark(photo: PhotoDetail)
+
+    suspend fun removeBookmark(contentId: String)
+
+    fun isBookmarked(contentId: String): Flow<Boolean>
 }

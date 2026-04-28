@@ -6,6 +6,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CardGiftcard
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -25,6 +26,8 @@ import com.devsimtaku.kophoto.core.designsystem.component.KPNavigationSuiteScaff
 import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import com.devsimtaku.kophoto.core.navigation.rememberNavigationState
 import com.devsimtaku.kophoto.core.navigation.toBackStack
+import com.devsimtaku.kophoto.feature.bookmarks.navigation.BookmarksNavKey
+import com.devsimtaku.kophoto.feature.bookmarks.navigation.bookmarksEntry
 import com.devsimtaku.kophoto.feature.photos.navigation.PhotosNavKey
 import com.devsimtaku.kophoto.feature.photos.navigation.photosEntry
 import com.devsimtaku.kophoto.feature.rewards.navigation.RewardsNavKey
@@ -42,7 +45,8 @@ fun HomeScreen(
         topLevelKeys = remember {
             setOf(
                 PhotosNavKey,
-                RewardsNavKey
+                RewardsNavKey,
+                BookmarksNavKey
             )
         }
     )
@@ -75,6 +79,7 @@ fun HomeScreen(
             entryProvider {
                 photosEntry(onPhotoClick = onPhotoClick)
                 rewardsEntry(onPhotoClick = onPhotoClick)
+                bookmarksEntry(onPhotoClick = onPhotoClick)
             }
         }
 
@@ -122,5 +127,10 @@ private enum class HomeDestination(
         label = "수상작",
         icon = Icons.Default.CardGiftcard,
         navKey = RewardsNavKey
+    ),
+    Bookmarks(
+        label = "즐겨찾기",
+        icon = Icons.Default.Favorite,
+        navKey = BookmarksNavKey
     )
 }

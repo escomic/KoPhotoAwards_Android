@@ -13,6 +13,7 @@ import com.devsimtaku.kophoto.core.network.model.KoPhotoResponse
 import com.devsimtaku.kophoto.core.network.model.KoPhotoResponseBodyContainer
 import com.devsimtaku.kophoto.core.network.model.PhotoGalleryItem
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -61,7 +62,8 @@ class PhotoGalleryPagingSourceTest {
 
         val pagingSource = PhotoGalleryPagingSource(
             photoDataSource = photoDataSource,
-            arrange = "C"
+            arrange = "C",
+            query = null
         )
 
         val pager = TestPager(PagingConfig(pageSize = 10), pagingSource)
@@ -81,7 +83,8 @@ class PhotoGalleryPagingSourceTest {
 
         val pagingSource = PhotoGalleryPagingSource(
             photoDataSource = photoDataSource,
-            arrange = "C"
+            arrange = "C",
+            query = null
         )
 
         val pager = TestPager(PagingConfig(pageSize = 10), pagingSource)
@@ -89,5 +92,46 @@ class PhotoGalleryPagingSourceTest {
 
         assertTrue(result is PagingSource.LoadResult.Error)
         assertEquals(exception, (result as PagingSource.LoadResult.Error).throwable)
+    }
+
+    @Test
+    fun `검색 쿼리가 있을 때 searchGalleryList 호출 성공`() = runTest {
+        val items = listOf(
+            PhotoGalleryItem(
+                galContentId = "1",
+                galTitle = "Search Result 1",
+                galContentTypeId = "1",
+                galWebImageUrl = "url1",
+                galCreatedtime = "2023",
+                galModifiedtime = "2023"
+            )
+        )
+        val response = KoPhotoResponse(
+            response = KoPhotoResponseBodyContainer(
+                header = KoPhotoHeader("0000", "OK"),
+                body = KoPhotoListBody(
+                    items = KoPhotoItems(items),
+                    numOfRows = 10,
+                    pageNo = 1,
+                    totalCount = 1
+                )
+            )
+        )
+
+        coEvery {
+            photoDataSource.searchGalleryList(any(), any(), any(), any())
+        } returns response
+
+        val pagingSource = PhotoGalleryPagingSource(
+            photoDataSource = photoDataSource,
+            arrange = "C",
+            query = "search"
+        )
+
+        val pager = TestPager(PagingConfig(pageSize = 10), pagingSource)
+        val result = pager.refresh() as PagingSource.LoadResult.Page<Int, PhotoGallery>
+
+        assertEquals(items.map { it.asDomain() }, result.data)
+        coVerify { photoDataSource.searchGalleryList(any(), any(), any(), any()) }
     }
 }
