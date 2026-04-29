@@ -17,6 +17,9 @@
     - `:feature:photos`: 일반 사진 갤러리 목록 화면
     - `:feature:rewards`: 공모전 수상작 목록 화면
     - `:feature:photodetail`: 사진 상세 정보 화면
+    - `:feature:bookmarks`: 북마크(저장된 사진) 목록 화면
+    - `:feature:imageviewer`: 고화질 이미지 뷰어 화면
+    - `:feature:search`: 사진 검색 화면
 - `:core:*`: 공통 기능 모듈
     - `:core:domain`: 비즈니스 로직 및 UseCase, 도메인 모델
     - `:core:data`: 리포지토리 구현 및 데이터 소스 (Local/Remote)
