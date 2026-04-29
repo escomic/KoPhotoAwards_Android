@@ -15,14 +15,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.icons.filled.Description
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.PhotoCamera
-import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -47,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.devsimtaku.kophoto.core.designsystem.KPIcon
 import com.devsimtaku.kophoto.core.designsystem.component.KPAsyncImage
 import com.devsimtaku.kophoto.core.designsystem.component.KPChip
 import com.devsimtaku.kophoto.core.designsystem.component.KPChipStyle
@@ -83,9 +76,11 @@ fun PhotoDetailScreen(
                 is PhotoDetailUiEffect.NavigateToSearch -> {
                     onNavigateToSearch(effect.keyword)
                 }
+
                 is PhotoDetailUiEffect.ShowErrorDialog -> {
                     errorToShow = effect.throwable
                 }
+
                 is PhotoDetailUiEffect.NavigateToImageViewer -> {
                     onImageClick(effect.imageUrl, effect.title)
                 }
@@ -109,7 +104,7 @@ fun PhotoDetailScreen(
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            imageVector = KPIcon.ArrowBack,
                             contentDescription = "Back"
                         )
                     }
@@ -117,9 +112,9 @@ fun PhotoDetailScreen(
                 actions = {
                     IconButton(onClick = { viewModel.sendEvent(PhotoDetailUiEvent.OnBookmarkClick) }) {
                         Icon(
-                            imageVector = if (uiState.isBookmarked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                            imageVector = if (uiState.isBookmarked) KPIcon.StarFilled else KPIcon.Star,
                             contentDescription = "Bookmark",
-                            tint = if (uiState.isBookmarked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
@@ -155,12 +150,12 @@ fun PhotoDetailScreen(
                 )
 
                 DetailRow(
-                    icon = Icons.Default.PhotoCamera,
+                    icon = { KPIcon.PhotoCamera },
                     title = "촬영자",
                     value = args.photographer
                 )
                 DetailRow(
-                    icon = Icons.Default.CalendarToday,
+                    icon = { KPIcon.Today },
                     title = "촬영일",
                     value = if (args.filmDay.length == 6) {
                         stringResource(
@@ -173,13 +168,13 @@ fun PhotoDetailScreen(
                     }
                 )
                 DetailRow(
-                    icon = Icons.Default.Place,
+                    icon = { KPIcon.LocationOn },
                     title = "촬영장소",
                     value = args.location
                 )
                 if (args.description.isNotBlank()) {
                     DetailRow(
-                        icon = Icons.Default.Description,
+                        icon = { KPIcon.Article },
                         title = "부가정보",
                         value = args.description
                     )
@@ -233,7 +228,7 @@ private fun KeywordRow(
 
 @Composable
 private fun DetailRow(
-    icon: ImageVector,
+    icon: @Composable () -> ImageVector,
     title: String,
     value: String,
     modifier: Modifier = Modifier
@@ -259,7 +254,7 @@ private fun DetailRow(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = icon,
+                imageVector = icon(),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier.size(24.dp)
@@ -288,7 +283,7 @@ private fun DetailRow(
 private fun DetailRowPreview() {
     KoPhotoTheme {
         DetailRow(
-            icon = Icons.Default.PhotoCamera,
+            icon = { KPIcon.PhotoCamera },
             title = "촬영자",
             value = "이범수",
             modifier = Modifier.padding(16.dp)

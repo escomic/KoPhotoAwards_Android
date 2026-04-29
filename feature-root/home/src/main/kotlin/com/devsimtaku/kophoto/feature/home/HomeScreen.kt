@@ -4,11 +4,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CardGiftcard
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.PhotoLibrary
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -22,6 +17,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
+import com.devsimtaku.kophoto.core.designsystem.KPIcon
 import com.devsimtaku.kophoto.core.designsystem.component.KPNavigationSuiteScaffold
 import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import com.devsimtaku.kophoto.core.navigation.rememberNavigationState
@@ -64,7 +60,7 @@ fun HomeScreen(
                     },
                     icon = {
                         Icon(
-                            imageVector = destination.icon,
+                            imageVector = destination.icon(),
                             contentDescription = null,
                         )
                     },
@@ -90,7 +86,7 @@ fun HomeScreen(
                     actions = {
                         IconButton(onClick = onSearchClick) {
                             Icon(
-                                imageVector = Icons.Default.Search,
+                                imageVector = KPIcon.Search,
                                 contentDescription = "Search"
                             )
                         }
@@ -115,22 +111,22 @@ fun HomeScreen(
 
 private enum class HomeDestination(
     val label: String,
-    val icon: ImageVector,
+    val icon: @Composable () -> ImageVector,
     val navKey: NavKey
 ) {
     Photos(
         label = "갤러리",
-        icon = Icons.Default.PhotoLibrary,
+        icon = { KPIcon.Photo },
         navKey = PhotosNavKey
     ),
     Rewards(
         label = "수상작",
-        icon = Icons.Default.CardGiftcard,
+        icon = { KPIcon.RewardedAds },
         navKey = RewardsNavKey
     ),
     Bookmarks(
         label = "즐겨찾기",
-        icon = Icons.Default.Favorite,
+        icon = { KPIcon.Star },
         navKey = BookmarksNavKey
     )
 }

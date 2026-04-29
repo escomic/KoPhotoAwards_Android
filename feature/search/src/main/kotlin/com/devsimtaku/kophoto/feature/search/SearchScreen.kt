@@ -12,10 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -42,6 +38,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
+import com.devsimtaku.kophoto.core.designsystem.KPIcon
 import com.devsimtaku.kophoto.core.designsystem.component.KPErrorDialog
 import com.devsimtaku.kophoto.core.designsystem.component.KPLoadingIndicator
 import com.devsimtaku.kophoto.core.designsystem.component.KPPhotoItem
@@ -107,7 +104,7 @@ fun SearchScreen(
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            imageVector = KPIcon.ArrowBack,
                             contentDescription = stringResource(CoreUiR.string.core_back)
                         )
                     }
@@ -149,7 +146,7 @@ private fun SearchBar(
         hint = stringResource(R.string.feature_search_placeholder),
         leadingIcon = {
             Icon(
-                imageVector = Icons.Default.Search,
+                imageVector = KPIcon.Search,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(24.dp)
@@ -162,7 +159,7 @@ private fun SearchBar(
                     onClick = onClearQuery
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Close,
+                        imageVector = KPIcon.Close,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.size(24.dp)

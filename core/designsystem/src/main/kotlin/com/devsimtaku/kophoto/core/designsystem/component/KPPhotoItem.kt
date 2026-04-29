@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PermIdentity
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -24,6 +22,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.devsimtaku.kophoto.core.designsystem.KPIcon
 import com.devsimtaku.kophoto.core.designsystem.theme.KoPhotoTheme
 
 @Composable
@@ -71,7 +70,7 @@ fun KPPhotoItem(
                     ) {
                         Icon(
                             modifier = Modifier.size(14.dp),
-                            imageVector = Icons.Default.PermIdentity,
+                            imageVector = KPIcon.PersonFlat,
                             contentDescription = "photographer",
                             tint = MaterialTheme.colorScheme.secondary
                         )
