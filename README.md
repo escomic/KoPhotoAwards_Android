@@ -3,9 +3,8 @@
 한국 관광공사 등의 사진 공모전 당선작 및 고화질 관광 사진 정보를 한눈에 확인하고 관리할 수 있는 안드로이드 애플리케이션입니다.
 
 ## 📺 데모 영상
-<p align="center">
-  <video src="docs/KoPhoto.mp4" width="300" controls></video>
-</p>
+https://github.com/escomic/KoPhotoAwards_Android/raw/dev/docs/KoPhoto.mp4
+
 
 ## 🎯 프로젝트 개요
 - **목적**: 한국의 아름다운 사진 공모전 수상작 및 관광지 사진 제공
@@ -50,7 +49,7 @@
 ## 🚀 시작하기
 1. 프로젝트를 클론합니다.
    ```bash
-   git clone https://github.com/your-repo/KoPhotoAwards_Android.git
+   git clone https://github.com/escomic/KoPhotoAwards_Android.git
    ```
 2. Android Studio (Ladybug 이상 권장)에서 프로젝트를 엽니다.
 3. 필요한 경우 `local.properties`에 API 키 설정을 확인합니다.
