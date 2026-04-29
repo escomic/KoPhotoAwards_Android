@@ -3,7 +3,9 @@
 한국 관광공사 등의 사진 공모전 당선작 및 고화질 관광 사진 정보를 한눈에 확인하고 관리할 수 있는 안드로이드 애플리케이션입니다.
 
 ## 📺 데모 영상
-https://github.com/escomic/KoPhotoAwards_Android/raw/dev/docs/KoPhoto.mp4
+<p align="center">
+  <video src="https://github.com/escomic/KoPhotoAwards_Android/raw/dev/docs/KoPhoto.mp4" width="300" controls></video>
+</p>
 
 
 ## 🎯 프로젝트 개요
