@@ -4,7 +4,7 @@
 
 ## 📺 데모 영상
 
-![KoPhotoAwards 데모 영상](docs/kophoto.gif)
+<img src="docs/kophoto.gif" width="300" alt="KoPhotoAwards 데모 영상" />
 
 ## 🎯 프로젝트 개요
 - **목적**: 한국의 아름다운 사진 공모전 수상작 및 관광지 사진 제공
