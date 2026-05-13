@@ -1,6 +1,5 @@
 package com.devsimtaku.kophoto.feature.rewards
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,13 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuAnchorType
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
@@ -37,6 +31,7 @@ import com.devsimtaku.kophoto.core.designsystem.component.KPErrorDialog
 import com.devsimtaku.kophoto.core.designsystem.component.KPLoadingIndicator
 import com.devsimtaku.kophoto.core.designsystem.component.KPPhotoItem
 import com.devsimtaku.kophoto.core.designsystem.component.KPPhotoSkeletonItem
+import com.devsimtaku.kophoto.core.designsystem.component.KPSortDropdown
 import com.devsimtaku.kophoto.core.domain.model.PhotoAward
 import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import com.devsimtaku.kophoto.core.ui.util.toErrorMessage
@@ -107,7 +102,6 @@ fun RewardsScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun RewardsContent(
     modifier: Modifier = Modifier,
@@ -134,13 +128,18 @@ private fun RewardsContent(
         }
 
         item {
-            RewardSortDropdown(
-                selectedSortOption = selectedSortOption,
-                onSortOptionSelected = onSortOptionSelected,
+            KPSortDropdown(
+                selectedOption = selectedSortOption,
+                options = RewardsSortOption.entries,
+                optionLabel = { sortOption ->
+                    stringResource(id = sortOption.labelResId)
+                },
+                onOptionSelected = onSortOptionSelected,
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.background)
-                    .padding(vertical = 8.dp)
+                    .padding(vertical = 8.dp),
+                label = stringResource(id = CoreUiR.string.core_sort)
             )
         }
 
@@ -170,56 +169,6 @@ private fun RewardsContent(
                     }
                 }
                 else -> {}
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun RewardSortDropdown(
-    modifier: Modifier = Modifier,
-    selectedSortOption: RewardsSortOption,
-    onSortOptionSelected: (RewardsSortOption) -> Unit
-) {
-    var expanded by remember { mutableStateOf(false) }
-
-    ExposedDropdownMenuBox(
-        expanded = expanded,
-        onExpandedChange = { expanded = it },
-        modifier = modifier
-    ) {
-        OutlinedTextField(
-            value = stringResource(id = selectedSortOption.labelResId),
-            onValueChange = {},
-            readOnly = true,
-            label = {
-                Text(text = "정렬")
-            },
-            trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-            },
-            colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
-            modifier = Modifier
-                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                .fillMaxWidth()
-        )
-
-        ExposedDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            RewardsSortOption.entries.forEach { sortOption ->
-                DropdownMenuItem(
-                    text = {
-                        Text(text = stringResource(id = sortOption.labelResId))
-                    },
-                    onClick = {
-                        expanded = false
-                        onSortOptionSelected(sortOption)
-                    },
-                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                )
             }
         }
     }

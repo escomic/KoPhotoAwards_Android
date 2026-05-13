@@ -2,8 +2,10 @@
 <resources>
     <string name="core_back">Back</string>
     <string name="core_error">Error</string>
+    <string name="core_sort">Sort</string>
     <string name="core_sort_created_date">Created date</string>
     <string name="core_sort_modified_date">Modified date</string>
+    <string name="core_sort_photo_date">Photo date</string>
     <string name="core_sort_title">Title</string>
     <string name="core_unknown_error">An unknown error occurred.</string>
 </resources>

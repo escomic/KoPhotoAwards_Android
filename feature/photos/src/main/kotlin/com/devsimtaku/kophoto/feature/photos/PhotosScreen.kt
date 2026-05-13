@@ -1,12 +1,10 @@
 package com.devsimtaku.kophoto.feature.photos
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,7 +17,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -34,9 +31,11 @@ import com.devsimtaku.kophoto.core.designsystem.component.KPErrorDialog
 import com.devsimtaku.kophoto.core.designsystem.component.KPLoadingIndicator
 import com.devsimtaku.kophoto.core.designsystem.component.KPPhotoItem
 import com.devsimtaku.kophoto.core.designsystem.component.KPPhotoSkeletonItem
+import com.devsimtaku.kophoto.core.designsystem.component.KPSortDropdown
 import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import com.devsimtaku.kophoto.core.domain.model.PhotoGallery
 import com.devsimtaku.kophoto.core.ui.util.toErrorMessage
+import com.devsimtaku.kophoto.feature.photos.contract.PhotosSortOption
 import com.devsimtaku.kophoto.feature.photos.contract.PhotosUiEffect
 import com.devsimtaku.kophoto.feature.photos.contract.PhotosUiEvent
 import com.devsimtaku.kophoto.core.ui.R as CoreUiR
@@ -92,7 +91,11 @@ fun PhotosScreen(
     ) {
         PhotosContent(
             photos = photos,
+            selectedSortOption = uiState.selectedSortOption,
             isInitialLoading = isInitialLoading,
+            onSortOptionSelected = { sortOption ->
+                viewModel.sendEvent(PhotosUiEvent.OnSortOptionSelected(sortOption))
+            },
             onPhotoClick = { photo ->
                 viewModel.sendEvent(PhotosUiEvent.OnPhotoClick(photo))
             }
@@ -104,7 +107,9 @@ fun PhotosScreen(
 private fun PhotosContent(
     modifier: Modifier = Modifier,
     photos: LazyPagingItems<PhotoGallery>,
+    selectedSortOption: PhotosSortOption,
     isInitialLoading: Boolean,
+    onSortOptionSelected: (PhotosSortOption) -> Unit,
     onPhotoClick: (PhotoGallery) -> Unit
 ) {
     LazyColumn(
@@ -120,6 +125,22 @@ private fun PhotosContent(
                 style = MaterialTheme.typography.displaySmall,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.fillMaxWidth()
+            )
+        }
+
+        item {
+            KPSortDropdown(
+                selectedOption = selectedSortOption,
+                options = PhotosSortOption.entries,
+                optionLabel = { sortOption ->
+                    stringResource(id = sortOption.labelResId)
+                },
+                onOptionSelected = onSortOptionSelected,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(vertical = 8.dp),
+                label = stringResource(id = CoreUiR.string.core_sort)
             )
         }
 
