@@ -1,16 +1,20 @@
 package com.devsimtaku.kophoto.feature.rewards
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
@@ -38,6 +42,7 @@ import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import com.devsimtaku.kophoto.core.ui.util.toErrorMessage
 import com.devsimtaku.kophoto.feature.rewards.contract.RewardsUiEffect
 import com.devsimtaku.kophoto.feature.rewards.contract.RewardsUiEvent
+import com.devsimtaku.kophoto.feature.rewards.contract.RewardsSortOption
 import com.devsimtaku.kophoto.core.ui.R as CoreUiR
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -90,7 +95,11 @@ fun RewardsScreen(
     ) {
         RewardsContent(
             rewards = rewards,
+            selectedSortOption = uiState.selectedSortOption,
             isInitialLoading = isInitialLoading,
+            onSortOptionSelected = { sortOption ->
+                viewModel.sendEvent(RewardsUiEvent.OnSortOptionSelected(sortOption))
+            },
             onPhotoClick = { reward ->
                 viewModel.sendEvent(RewardsUiEvent.OnPhotoClick(reward))
             }
@@ -98,11 +107,14 @@ fun RewardsScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun RewardsContent(
     modifier: Modifier = Modifier,
     rewards: LazyPagingItems<PhotoAward>,
+    selectedSortOption: RewardsSortOption,
     isInitialLoading: Boolean,
+    onSortOptionSelected: (RewardsSortOption) -> Unit,
     onPhotoClick: (PhotoAward) -> Unit
 ) {
     LazyColumn(
@@ -118,6 +130,17 @@ private fun RewardsContent(
                 style = MaterialTheme.typography.displaySmall,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.fillMaxWidth()
+            )
+        }
+
+        item {
+            RewardSortDropdown(
+                selectedSortOption = selectedSortOption,
+                onSortOptionSelected = onSortOptionSelected,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(vertical = 8.dp)
             )
         }
 
@@ -147,6 +170,56 @@ private fun RewardsContent(
                     }
                 }
                 else -> {}
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun RewardSortDropdown(
+    modifier: Modifier = Modifier,
+    selectedSortOption: RewardsSortOption,
+    onSortOptionSelected: (RewardsSortOption) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = it },
+        modifier = modifier
+    ) {
+        OutlinedTextField(
+            value = stringResource(id = selectedSortOption.labelResId),
+            onValueChange = {},
+            readOnly = true,
+            label = {
+                Text(text = "정렬")
+            },
+            trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+            },
+            colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+            modifier = Modifier
+                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                .fillMaxWidth()
+        )
+
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            RewardsSortOption.entries.forEach { sortOption ->
+                DropdownMenuItem(
+                    text = {
+                        Text(text = stringResource(id = sortOption.labelResId))
+                    },
+                    onClick = {
+                        expanded = false
+                        onSortOptionSelected(sortOption)
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                )
             }
         }
     }
