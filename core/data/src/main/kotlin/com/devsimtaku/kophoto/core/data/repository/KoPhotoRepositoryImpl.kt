@@ -13,8 +13,11 @@ import com.devsimtaku.kophoto.core.domain.model.PhotoDetail
 import com.devsimtaku.kophoto.core.domain.model.PhotoGallery
 import com.devsimtaku.kophoto.core.domain.repository.KoPhotoRepository
 import com.devsimtaku.kophoto.core.network.PhotoDataSource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class KoPhotoRepositoryImpl @Inject constructor(
@@ -83,20 +86,27 @@ class KoPhotoRepositoryImpl @Inject constructor(
     }
 
     override fun getBookmarks(): Flow<List<PhotoDetail>> {
-        return bookmarkDao.getBookmarks().map { entities ->
-            entities.map { it.toDomain() }
-        }
+        return bookmarkDao.getBookmarks()
+            .flowOn(Dispatchers.IO)
+            .map { entities ->
+                entities.map { it.toDomain() }
+            }
     }
 
     override suspend fun addBookmark(photo: PhotoDetail) {
-        bookmarkDao.insertBookmark(photo.toEntity())
+        withContext(Dispatchers.IO) {
+            bookmarkDao.insertBookmark(photo.toEntity())
+        }
     }
 
     override suspend fun removeBookmark(contentId: String) {
-        bookmarkDao.deleteBookmark(contentId)
+        withContext(Dispatchers.IO) {
+            bookmarkDao.deleteBookmark(contentId)
+        }
     }
 
     override fun isBookmarked(contentId: String): Flow<Boolean> {
         return bookmarkDao.isBookmarked(contentId)
+            .flowOn(Dispatchers.IO)
     }
 }
