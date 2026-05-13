@@ -9,6 +9,7 @@
 ## 🎯 프로젝트 개요
 - **목적**: 한국의 아름다운 사진 공모전 수상작 및 관광지 사진 제공
 - **주요 타겟**: 사진 애호가, 한국 관광 정보가 필요한 사용자
+- Figma : https://www.figma.com/design/PxYJdwVGRI0FR66Z45E0XG/KoPhotos?node-id=1-2058&t=4wl4DDwkE0OvF5sE-1
 
 ## ✨ 주요 기능
 - **사진 리스트**: 수상작 및 일반 관광 사진 갤러리 탐색
